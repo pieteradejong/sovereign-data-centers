@@ -1,0 +1,6 @@
+Region,Role,Share of design load,Resilience role,Notes
+West / Randstad,Primary civil cloud,0.3,Active-active,High connectivity; avoid overconcentration in Amsterdam proper.
+North,Sovereign secondary,0.2,Active-active,Potential power/land advantages; geographically separated.
+East,Government / continuity,0.2,Active-active,Reduces western concentration risk.
+South,Defense / industrial,0.2,Active-active,Proximity to defense/industrial ecosystem.
+Reserve / DR,Strategic reserve,0.1,Warm reserve,Expandable reserved capacity.

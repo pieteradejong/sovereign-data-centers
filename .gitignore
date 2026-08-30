@@ -1,0 +1,22 @@
+# OS / editor cruft
+.DS_Store
+.vscode/
+.idea/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Python (in case tooling is added later)
+__pycache__/
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Node (in case tooling is added later)
+node_modules/

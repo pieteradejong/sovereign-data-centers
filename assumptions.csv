@@ -1,0 +1,23 @@
+Category,Assumption,Value,Unit,Source / Status,Notes
+Compute,CPU cores per server,128,cores/server,Working assumption,Dual-socket general-purpose server.
+Compute,GPU equivalents per GPU server,8,GPU/server,Working assumption,"Accelerator slots, not a specific GPU model."
+Compute,Average CPU utilization,0.55,%,Working assumption,Target steady-state utilization.
+Compute,Average GPU utilization,0.6,%,Working assumption,Target steady-state utilization.
+Storage,Usable storage per storage server,0.4,PB/server,Working assumption,Usable storage per node.
+Storage,Storage replication factor,3.0,x,Working assumption,Three-copy logical replication.
+Rack,Servers per rack,32,servers/rack,Working assumption,Blended rack density.
+Power,CPU server power,1.2,kW/server,Working assumption,Average loaded draw.
+Power,GPU server power,8.0,kW/server,Working assumption,High-density accelerator server.
+Power,Storage server power,1.0,kW/server,Working assumption,Average loaded draw.
+Power,Network/other IT overhead,0.12,% of server IT,Working assumption,"Switching, security, appliances."
+Facility,PUE,1.25,x,Working assumption,Facility power / IT power.
+Facility,Design headroom,0.2,%,Working assumption,Spare capacity for growth/failover.
+Facility,Critical-load MW per site,12.0,MW/site,Working assumption,Planning capacity per site.
+Facility,Minimum sovereign sites,3,sites,Prior concept,Geographically separated regions.
+Economics,Server CAPEX - CPU,0.012,EUR mm/server,Working assumption,€12k per server.
+Economics,Server CAPEX - GPU,0.24,EUR mm/server,Working assumption,€240k blended GPU server.
+Economics,Server CAPEX - storage,0.035,EUR mm/server,Working assumption,€35k per storage node.
+Economics,Network CAPEX,0.18,x server CAPEX,Working assumption,Network/security/optical.
+Economics,Facility CAPEX,10.0,EUR mm/MW,Working assumption,Building/electrical/cooling.
+Economics,Electricity price,95.0,EUR/MWh,Working assumption,Blended planning price.
+Economics,Non-power annual OPEX,0.045,x total CAPEX,Working assumption,Staff/software/maintenance.
