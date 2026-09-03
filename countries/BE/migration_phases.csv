@@ -1,0 +1,5 @@
+Phase,Phase name,Workloads,Servers,Design MW,CAPEX (EUR mm),Cumulative CAPEX %,Hybrid eligible (class)
+1,Sovereign core,Digital identity / Belgian eID card + itsme; Core government applications,1079,2.13,40.6,19.6,no
+2,Security and defense,Defense classified compute; Cybersecurity / SOC / telemetry,1050,2.71,65.8,51.3,no
+3,State record,Data platforms & analytics,728,1.5,38.1,69.7,no
+4,Elective,AI / sovereign model serving; Scientific / public research,671,2.37,62.9,100.0,yes

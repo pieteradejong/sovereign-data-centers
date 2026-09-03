@@ -1,0 +1,5 @@
+Phase,Phase name,Workloads,Servers,Design MW,CAPEX (EUR mm),Cumulative CAPEX %,Hybrid eligible (class)
+1,Sovereign core,Digital identity / Bulgarian eID; Core government applications,565,1.11,21.2,21.7,no
+2,Security and defense,Defense classified compute; Cybersecurity / SOC / telemetry,782,2.06,50.1,73.0,no
+3,State record,Data platforms & analytics,277,0.57,14.5,87.8,no
+4,Elective,AI / sovereign model serving; Scientific / public research,125,0.45,11.9,100.0,yes

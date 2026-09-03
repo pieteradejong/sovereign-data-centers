@@ -1,0 +1,5 @@
+Phase,Phase name,Workloads,Servers,Design MW,CAPEX (EUR mm),Cumulative CAPEX %,Hybrid eligible (class)
+1,Sovereign core,Digital identity / ID Austria; Core government applications,824,1.62,31.0,19.2,no
+2,Security and defense,Defense classified compute; Cybersecurity / SOC / telemetry,805,2.06,50.0,50.2,no
+3,State record,Data platforms & analytics,574,1.19,30.3,68.9,no
+4,Elective,AI / sovereign model serving; Scientific / public research,536,1.89,50.2,100.0,yes

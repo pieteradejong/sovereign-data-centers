@@ -1,0 +1,5 @@
+Phase,Phase name,Workloads,Servers,Design MW,CAPEX (EUR mm),Cumulative CAPEX %,Hybrid eligible (class)
+1,Sovereign core,Digital identity / DAP - Digitalis Allampolgarsag app + eSzemelyi eID; Core government applications,899,1.77,33.8,25.6,no
+2,Security and defense,Defense classified compute; Cybersecurity / SOC / telemetry,852,2.19,53.1,65.9,no
+3,State record,Data platforms & analytics,433,0.91,23.1,83.4,no
+4,Elective,AI / sovereign model serving; Scientific / public research,231,0.82,21.9,100.0,yes

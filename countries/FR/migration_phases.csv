@@ -1,0 +1,5 @@
+Phase,Phase name,Workloads,Servers,Design MW,CAPEX (EUR mm),Cumulative CAPEX %,Hybrid eligible (class)
+1,Sovereign core,Digital identity / FranceConnect; Core government applications,5945,11.71,223.2,20.6,no
+2,Security and defense,Defense classified compute; Cybersecurity / SOC / telemetry,5944,15.31,371.4,54.8,no
+3,State record,Data platforms & analytics,3833,7.89,199.8,73.2,no
+4,Elective,AI / sovereign model serving; Scientific / public research,3111,10.99,291.1,100.0,yes

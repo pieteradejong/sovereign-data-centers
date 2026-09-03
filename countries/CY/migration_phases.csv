@@ -1,0 +1,5 @@
+Phase,Phase name,Workloads,Servers,Design MW,CAPEX (EUR mm),Cumulative CAPEX %,Hybrid eligible (class)
+1,Sovereign core,Digital identity / CY Login + Cyprus Digital ID; Core government applications,136,0.27,5.2,17.2,no
+2,Security and defense,Defense classified compute; Cybersecurity / SOC / telemetry,198,0.51,12.4,58.2,no
+3,State record,Data platforms & analytics,98,0.22,5.6,76.8,no
+4,Elective,AI / sovereign model serving; Scientific / public research,70,0.26,7.0,100.0,yes

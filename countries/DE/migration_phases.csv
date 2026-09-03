@@ -1,0 +1,5 @@
+Phase,Phase name,Workloads,Servers,Design MW,CAPEX (EUR mm),Cumulative CAPEX %,Hybrid eligible (class)
+1,Sovereign core,Digital identity / Online-Ausweis eID + BundID; Core government applications,7476,14.73,280.8,19.6,no
+2,Security and defense,Defense classified compute; Cybersecurity / SOC / telemetry,7319,18.8,455.9,51.3,no
+3,State record,Data platforms & analytics,5092,10.47,265.0,69.8,no
+4,Elective,AI / sovereign model serving; Scientific / public research,4644,16.37,433.3,100.0,yes

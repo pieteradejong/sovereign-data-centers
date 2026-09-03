@@ -9,6 +9,7 @@ Reproduces the formula flow of countries/NL/dutch_sovereign_data_center_capacity
 
 Inputs (all CSV, all editable):
     model/assumptions.csv                          shared engineering/economic defaults
+    model/migration_phases.csv                     workload class -> migration phase
     countries/<ISO>/params.csv                     per-country overrides of any assumption (optional)
     countries/<ISO>/workloads_inputs.csv           workload demand rows
     countries/<ISO>/region_allocation_inputs.csv   share of design load per region
@@ -16,6 +17,7 @@ Inputs (all CSV, all editable):
 Outputs:
     countries/<ISO>/facility_summary.csv
     countries/<ISO>/region_allocation_output.csv
+    countries/<ISO>/migration_phases.csv
     model/eu27_results.csv                         one row per country (when run with --all)
 
 Usage:
@@ -38,6 +40,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 COUNTRIES = ROOT / "countries"
 ASSUMPTIONS = ROOT / "model" / "assumptions.csv"
+PHASE_MAP = ROOT / "model" / "migration_phases.csv"
 
 # Assumption names exactly as they appear in assumptions.csv column "Assumption".
 A = {
@@ -138,6 +141,72 @@ class Summary:
     opex_nonpower: float = 0.0
     opex_total: float = 0.0
     regions: list[dict] = field(default_factory=list)
+    phases: list[dict] = field(default_factory=list)
+
+
+def load_phase_map() -> dict[str, dict]:
+    """Workload class -> migration phase. Keyed on Class, not Workload: the generator
+    rewrites workload names per country (e.g. "Digital identity / Online-Ausweis eID"),
+    but the seven class names are stable across all 27."""
+    return {r["Class"]: r for r in read_csv(PHASE_MAP)}
+
+
+def compute_phases(s: "Summary", a: dict[str, float]) -> list[dict]:
+    """Group the already-computed per-workload results into migration phases.
+
+    No new sizing math: this only sums WorkloadResult fields and apportions facility
+    CAPEX by each phase's share of server IT load. Phase CAPEX therefore sums to
+    Summary.capex_total.
+
+    "Hybrid eligible (class)" is the class-level property only. The country-level gate
+    (does an in-jurisdiction commercial region exist?) needs eu27_parameters.csv and is
+    applied downstream in country_data.py, so this module stays dependent on nothing but
+    a country directory plus assumptions.
+    """
+    pmap = load_phase_map()
+    unknown = sorted({w.cls for w in s.workloads} - pmap.keys())
+    if unknown:
+        raise KeyError(f"{s.iso2}: workload classes missing from {PHASE_MAP.name}: {unknown}")
+
+    buckets: dict[str, dict] = {}
+    for w in s.workloads:
+        p = pmap[w.cls]
+        b = buckets.setdefault(
+            p["Phase"],
+            {"name": p["Phase name"], "hybrid": p["Hybrid eligible"], "workloads": [],
+             "cpu": 0, "gpu": 0, "storage": 0, "servers": 0, "mw": 0.0},
+        )
+        b["workloads"].append(w.workload)
+        b["cpu"] += w.cpu_servers
+        b["gpu"] += w.gpu_servers
+        b["storage"] += w.storage_servers
+        b["servers"] += w.total_servers
+        b["mw"] += w.server_it_mw
+
+    rows, cumulative = [], 0.0
+    for phase in sorted(buckets):
+        b = buckets[phase]
+        share = b["mw"] / s.server_it_mw if s.server_it_mw else 0.0
+        capex_servers = (
+            b["cpu"] * a[A["capex_cpu"]]
+            + b["gpu"] * a[A["capex_gpu"]]
+            + b["storage"] * a[A["capex_storage"]]
+        )
+        capex = capex_servers * (1 + a[A["capex_network"]]) + s.capex_facility * share
+        cumulative += capex
+        rows.append(
+            {
+                "Phase": phase,
+                "Phase name": b["name"],
+                "Workloads": "; ".join(b["workloads"]),
+                "Servers": b["servers"],
+                "Design MW": round(s.design_mw * share, 2),
+                "CAPEX (EUR mm)": round(capex, 1),
+                "Cumulative CAPEX %": round(100 * cumulative / s.capex_total, 1) if s.capex_total else 0.0,
+                "Hybrid eligible (class)": b["hybrid"],
+            }
+        )
+    return rows
 
 
 def compute_workload(row: dict, a: dict[str, float]) -> WorkloadResult:
@@ -224,10 +293,13 @@ def run_country(iso2: str, write: bool = True) -> Summary:
         if abs(total_share - 1.0) > 1e-6:
             print(f"warning: {iso2} region shares sum to {total_share:.3f}, not 1.0", file=sys.stderr)
 
+    s.phases = compute_phases(s, a)
+
     if write:
         write_csv(cdir / "facility_summary.csv", summary_rows(s, a))
         if s.regions:
             write_csv(cdir / "region_allocation_output.csv", s.regions)
+        write_csv(cdir / "migration_phases.csv", s.phases)
     return s
 
 

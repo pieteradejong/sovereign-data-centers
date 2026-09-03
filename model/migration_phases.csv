@@ -1,0 +1,8 @@
+Class,Phase,Phase name,Hybrid eligible,Rationale
+Critical government,1,Sovereign core,no,Identity and authentication cannot be foreign-hosted under any sovereignty posture; loss of control here is loss of the ability to establish who exists.
+Government,1,Sovereign core,no,Core administrative services are the state's operational continuity; they move first and they do not move back.
+Security,2,Security and defense,no,SOC telemetry and threat intelligence carry clearance constraints and reveal national defensive posture in aggregate.
+Defense,2,Security and defense,no,Classified compute is jurisdiction-bound by law in every member state; no commercial tier is admissible.
+Government data,3,State record,no,"Registries, cadastre and national datasets. The Tier 0/1 identity and legal record lives here; see TIER0-TIER1-SIZING.md."
+AI,4,Elective,yes,Model serving is an economic-policy choice rather than a continuity requirement; hybrid-eligible where an in-jurisdiction commercial region exists.
+Research,4,Elective,yes,Scientific and public research workloads are the most readily burst to commercial capacity and the least sovereignty-critical.

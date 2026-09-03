@@ -1,0 +1,5 @@
+Phase,Phase name,Workloads,Servers,Design MW,CAPEX (EUR mm),Cumulative CAPEX %,Hybrid eligible (class)
+1,Sovereign core,Digital identity / Profil Zaufany; Core government applications,3170,6.25,119.1,20.6,no
+2,Security and defense,Defense classified compute; Cybersecurity / SOC / telemetry,4403,11.54,280.7,69.1,no
+3,State record,Data platforms & analytics,1696,3.5,88.5,84.5,no
+4,Elective,AI / sovereign model serving; Scientific / public research,962,3.39,89.8,100.0,yes

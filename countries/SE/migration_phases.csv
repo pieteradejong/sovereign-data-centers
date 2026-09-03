@@ -1,0 +1,5 @@
+Phase,Phase name,Workloads,Servers,Design MW,CAPEX (EUR mm),Cumulative CAPEX %,Hybrid eligible (class)
+1,Sovereign core,Digital identity / BankID; Core government applications,980,1.93,36.8,19.4,no
+2,Security and defense,Defense classified compute; Cybersecurity / SOC / telemetry,939,2.41,58.6,50.4,no
+3,State record,Data platforms & analytics,666,1.39,35.2,69.0,no
+4,Elective,AI / sovereign model serving; Scientific / public research,627,2.22,58.8,100.0,yes
