@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Design MW,Estimated racks,Indicative facility CAPEX (EUR mm),Resilience role,Notes
+Attica / Athens,Primary civil cloud,0.405,2.47,32.6,24.7,Active-active,"GSIS G-Cloud, GR-IX, Microsoft Spata campus; seismic design mandatory."
+Thessaloniki / Central Macedonia,Sovereign secondary,0.27,1.65,21.7,16.5,Active-active,"Second metro, 300 km separation, Balkan transit."
+Western Greece / Patras,Government / continuity,0.225,1.37,18.1,13.7,Active-active,Adriatic cable routes; separate seismic domain.
+Crete / Chania,Strategic reserve,0.1,0.61,8.0,6.1,Warm reserve,East-Med cable hub and Great Sea Interconnector; island - reserve/edge only.

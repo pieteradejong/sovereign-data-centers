@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Resilience role,Notes
+East / Vienna - Lower Austria,Primary civil cloud,0.405,Active-active,"VIX connectivity, federal ministries, BRZ estate; Danube flood zoning applies."
+Upper Austria / Linz,Sovereign secondary,0.27,Active-active,"Industrial grid, hydro power, 180 km from Vienna."
+Styria / Graz,Government / continuity,0.225,Active-active,"Southern separation, research campus (TU Graz)."
+Tyrol - Salzburg / West,Strategic reserve,0.1,Warm reserve,Alpine hydro; expansion or hardened reserve.

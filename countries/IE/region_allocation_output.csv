@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Design MW,Estimated racks,Indicative facility CAPEX (EUR mm),Resilience role,Notes
+Dublin,Primary civil cloud,0.405,2.15,25.6,21.5,Active-active,"OGCIO/Backweston estate, INEX; EirGrid connection moratorium to ~2028 is binding."
+Cork,Sovereign secondary,0.27,1.44,17.1,14.4,Active-active,"Atlantic cable landings (Kinsale, Amitie), Celtic Interconnector."
+Galway - Limerick / West,Government / continuity,0.225,1.2,14.2,12.0,Active-active,"Wind surplus, AEC-1 landing (Killala)."
+Midlands / Athlone,Strategic reserve,0.1,0.53,6.3,5.3,Warm reserve,Post-peat land and grid; reserve/expansion.

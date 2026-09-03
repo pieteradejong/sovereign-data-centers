@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Design MW,Estimated racks,Indicative facility CAPEX (EUR mm),Resilience role,Notes
+Riga,Primary civil cloud,0.405,0.61,7.7,6.1,Active-active,"LVRTC LVDC estate, LIX; Daugava flood zoning."
+Ventspils / Kurzeme,Sovereign secondary,0.27,0.41,5.1,4.1,Active-active,Latvia-Sweden cable landing; furthest from the eastern frontier.
+Valmiera / Vidzeme,Government / continuity,0.225,0.34,4.3,3.4,Active-active,Inland separation; Estonia transit.
+Out-of-country reserve,Strategic reserve,0.1,0.15,1.9,1.5,Warm reserve,Follow the Estonian Data Embassy pattern - national-only model cannot close this gap.

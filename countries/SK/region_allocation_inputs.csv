@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Resilience role,Notes
+Bratislava,Primary civil cloud,0.405,Active-active,"MoI Kopcianska and MoF DataCentrum, SIX; Danube flood zoning."
+Banska Bystrica / Centre,Sovereign secondary,0.27,Active-active,"MoF Tajov backup site; 200 km separation, cheap land."
+Kosice / East,Government / continuity,0.225,Active-active,Eastern metro; 80 km from Ukraine - hardened design.
+Zilina / North,Strategic reserve,0.1,Warm reserve,"Hydro grid, Czech/Polish transit; reserve."

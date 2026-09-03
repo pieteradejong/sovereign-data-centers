@@ -1,0 +1,6 @@
+Region,Role,Share of design load,Resilience role,Notes
+Milan / Lombardy,Primary civil cloud,0.36,Active-active,"PSN pair, MIX, all four hyperscaler regions nearby; Po flood zoning."
+Rome / Lazio,Sovereign secondary,0.18,Active-active,"Ministries, Sogei, NAMEX; Apennine seismic zoning."
+Turin / Piedmont,Government / continuity,0.18,Active-active,"Alpine hydro, TOP-IX; lower seismicity."
+Puglia / Bari,Defense / industrial,0.18,Active-active,"Southern separation, Adriatic cable landings; renewables belt."
+Emilia / Bologna,Strategic reserve,0.1,Warm reserve,EuroHPC Leonardo campus (Tecnopolo); reserve - 2023 flood plains excluded.

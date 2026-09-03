@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Resilience role,Notes
+Stockholm - Malardalen,Primary civil cloud,0.405,Active-active,"State IT providers, Netnod, all three hyperscaler regions; SE3 grid constraints."
+Gavle - Sandviken,Sovereign secondary,0.27,Active-active,Azure campus proves grid; SE2 surplus power.
+Lulea - Boden / North,Government / continuity,0.225,Active-active,"SE1 cheapest power, free cooling, Meta campus; adds ~15 ms."
+Gothenburg / West,Defense / industrial,0.1,Active-active,"Naval/defense cluster, North Sea routing away from the Baltic."

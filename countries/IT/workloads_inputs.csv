@@ -1,0 +1,8 @@
+Workload,Class,CPU cores required,GPU eq. required,Logical storage (PB),Availability factor,Notes
+Digital identity / SPID,Critical government,58800,0,13.1,1.5,Scaled from NL baseline x3.27 (identity load tracks citizens; fixed platform floor for small states).
+Core government applications,Government,134300,0,44.0,1.35,Scaled from NL baseline x2.44 (transactional load tracks citizens and the size of the administration).
+Data platforms & analytics,Government data,90900,208,155.9,1.25,Scaled from NL baseline x2.60 (data volume tracks citizens and economic activity).
+AI / sovereign model serving,AI,34700,984,23.1,1.3,Scaled from NL baseline x1.93 (AI capacity is an economic-policy choice; tracks GDP).
+Defense classified compute,Defense,98000,840,49.0,1.5,Scaled from NL baseline x3.27 (tracks population; frontline states carry a higher defense share).
+Cybersecurity / SOC / telemetry,Security,61000,88,69.3,1.4,Scaled from NL baseline x2.77 (telemetry tracks the digital estate; high fixed floor because a SOC has a minimum viable size).
+Scientific / public research,Research,50200,248,38.6,1.15,Scaled from NL baseline x1.93 (research HPC is discretionary; tracks GDP).

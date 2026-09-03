@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Design MW,Estimated racks,Indicative facility CAPEX (EUR mm),Resilience role,Notes
+Copenhagen / Zealand,Primary civil cloud,0.405,1.91,23.6,19.1,Active-active,"Statens It estate, DIX/Netnod; Zealand grid queue and storm-surge zoning."
+Jutland / Fredericia - Aarhus,Sovereign secondary,0.27,1.28,15.7,12.8,Active-active,"Wind surplus, existing hyperscale campuses, Atlantic cable landings."
+Funen / Odense,Government / continuity,0.225,1.06,13.1,10.6,Active-active,"Central, separated from both metros."
+North Jutland,Strategic reserve,0.1,0.47,5.8,4.7,Warm reserve,"Cheapest power, reserve/expansion."

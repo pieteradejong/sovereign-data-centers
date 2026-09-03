@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Design MW,Estimated racks,Indicative facility CAPEX (EUR mm),Resilience role,Notes
+Vilnius,Primary civil cloud,0.405,0.83,10.6,8.3,Active-active,"KVTC state DCs, LIXP; 30 km from Belarus - hardened design mandatory."
+Kaunas,Sovereign secondary,0.27,0.56,7.1,5.6,Active-active,"Second metro, 100 km separation, KV Baltic campus."
+Klaipeda,Government / continuity,0.225,0.46,5.9,4.6,Active-active,"LNG terminal, NordBalt fibre to Sweden; furthest from Belarus."
+Out-of-country reserve,Strategic reserve,0.1,0.21,2.6,2.1,Warm reserve,Follow the Estonian Data Embassy pattern - national-only model cannot close this gap.

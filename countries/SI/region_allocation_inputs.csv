@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Resilience role,Notes
+Ljubljana,Primary civil cloud,0.405,Active-active,"DRO national DC, SIX; Ljubljana basin seismic zoning."
+Maribor / Styria,Sovereign secondary,0.27,Active-active,"EuroHPC Vega campus, 120 km separation, Drava hydro."
+Koper - Nova Gorica / West,Government / continuity,0.225,Active-active,Italian transit and port grid; 2023 flood plains excluded.
+Celje / Savinja,Strategic reserve,0.1,Warm reserve,Central reserve; flood-plain siting must be excluded.

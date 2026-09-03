@@ -1,0 +1,3 @@
+Region,Role,Share of design load,Design MW,Estimated racks,Indicative facility CAPEX (EUR mm),Resilience role,Notes
+Luxembourg City - Bettembourg,Primary civil cloud,0.55,0.73,9.0,7.3,Active-active,"CTIE and LuxConnect Tier IV estate, LU-CIX."
+Bissen / North,Sovereign secondary,0.45,0.59,7.4,5.9,Active-active,30 km separation is the national maximum; Google Bissen site proves grid.

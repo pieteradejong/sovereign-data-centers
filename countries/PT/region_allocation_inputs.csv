@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Resilience role,Notes
+Lisbon,Primary civil cloud,0.405,Active-active,"AMA/eSPap estate, GigaPIX; seismic/tsunami design mandatory."
+Sines / Alentejo,Sovereign secondary,0.27,Active-active,"Atlantic cable hub, Start Campus proves 1 GW-class grid; renewables."
+Porto / North,Government / continuity,0.225,Active-active,"300 km separation, lower seismicity, Douro hydro."
+Coimbra / Centre,Strategic reserve,0.1,Warm reserve,Inland reserve between the two metros.

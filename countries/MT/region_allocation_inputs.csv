@@ -1,0 +1,3 @@
+Region,Role,Share of design load,Resilience role,Notes
+Malta / Marsa - Santa Venera,Primary civil cloud,0.55,Active-active,MITA estate; Sicily cable landings.
+Gozo,Sovereign secondary,0.45,Active-active,Only physical separation available (~30 km); shares the Sicily power/data corridor.

@@ -1,0 +1,6 @@
+Region,Role,Share of design load,Resilience role,Notes
+Warsaw / Mazovia,Primary civil cloud,0.36,Active-active,"COI/NASK RChO estate, PLIX, both hyperscaler regions."
+Poznan / Greater Poland,Sovereign secondary,0.18,Active-active,"Western separation, Beyond.pl campus, German transit."
+Krakow / Lesser Poland,Defense / industrial,0.18,Active-active,"Southern separation, CloudFerro/AI factory ecosystem."
+Gdansk / Pomerania,Government / continuity,0.18,Active-active,"Baltic cable access, planned nuclear grid; Kaliningrad proximity - hardened."
+Lodz - Wroclaw,Strategic reserve,0.1,Warm reserve,Central/SW reserve; 2024 Oder flood plains excluded.

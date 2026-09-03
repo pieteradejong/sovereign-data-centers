@@ -1,0 +1,6 @@
+Region,Role,Share of design load,Resilience role,Notes
+Frankfurt - Rhine-Main,Primary civil cloud,0.36,Active-active,"DE-CIX, ITZBund estate; grid saturated - expect multi-year connection lead time."
+Berlin - Brandenburg,Sovereign secondary,0.18,Active-active,"Federal ministries, AWS ESC and STACKIT prove grid headroom in the east."
+Munich / Bavaria,Defense / industrial,0.18,Active-active,"Defense-industrial cluster, Bundeswehr IT; southern separation."
+Hamburg / North,Government / continuity,0.18,Active-active,"Wind surplus, North Sea cable landings (Norden/Sylt)."
+Leipzig - Saxony,Strategic reserve,0.1,Warm reserve,Post-coal land and grid; reserve/expansion.

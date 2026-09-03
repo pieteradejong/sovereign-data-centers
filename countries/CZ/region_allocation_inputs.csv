@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Resilience role,Notes
+Prague - Central Bohemia,Primary civil cloud,0.405,Active-active,"SPCSS/NAKIT estate, NIX.CZ; Vltava flood zoning applies."
+Brno / South Moravia,Sovereign secondary,0.27,Active-active,"Second metro, research cluster, 200 km separation."
+Ostrava / Moravia-Silesia,Government / continuity,0.225,Active-active,Industrial grid; post-coal land availability.
+Plzen / West Bohemia,Strategic reserve,0.1,Warm reserve,"Western reserve, furthest from the eastern frontier."

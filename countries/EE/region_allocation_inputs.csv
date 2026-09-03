@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Resilience role,Notes
+Tallinn,Primary civil cloud,0.405,Active-active,"RIT Riigipilv estate, TLLIX, EESF cables to Finland."
+Tartu,Sovereign secondary,0.27,Active-active,"University city, 180 km separation; 60 km from the Russian border - hardened design."
+Parnu / West,Government / continuity,0.225,Active-active,Furthest from the eastern frontier; Estonia-Sweden cable.
+Out-of-country reserve (Data Embassy),Strategic reserve,0.1,Warm reserve,Existing Luxembourg Data Embassy pattern - national-only model cannot close this gap.

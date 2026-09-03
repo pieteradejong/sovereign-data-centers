@@ -1,0 +1,6 @@
+Region,Role,Share of design load,Resilience role,Notes
+Bucharest,Primary civil cloud,0.36,Active-active,"STS government cloud, InterLAN/RoNIX; highest-seismic-risk EU capital - base isolation required."
+Cluj / Transylvania,Sovereign secondary,0.18,Active-active,"IT cluster, outside the Vrancea zone, 400 km separation."
+Timisoara / Banat,Government / continuity,0.18,Active-active,"Western separation, Hungarian transit, low seismicity."
+Brasov - Sibiu,Defense / industrial,0.18,Active-active,Existing STS regional DCs; mountain sites - verify Vrancea distance.
+Craiova / Oltenia,Strategic reserve,0.1,Warm reserve,ClusterPower campus; away from the Ukraine/Moldova frontier.

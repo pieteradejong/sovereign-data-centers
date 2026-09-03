@@ -1,0 +1,24 @@
+Metric,Value,Unit,Formula / Driver
+CPU servers,972,servers,Workload-derived
+GPU servers,53,servers,Workload-derived
+Storage servers,350,servers,Workload-derived
+Total servers,1375,servers,Sum of server classes
+Rack equivalents,43.0,racks,Servers / servers per rack
+Server IT load,1.94,MW,Workload-derived
+Total IT load,2.173,MW,Adds network/other IT
+Facility load before headroom,2.717,MW,IT x PUE
+Facility design load,3.26,MW,Adds design headroom
+Sites required by MW,1,sites,Design MW / site capacity
+Recommended sovereign sites,3,sites,"Max(capacity, minimum sites)"
+Average design MW/site,1.09,MW/site,Design MW / sites
+CPU server CAPEX,11.66,EUR mm,CPU servers x unit cost
+GPU server CAPEX,12.72,EUR mm,GPU servers x unit cost
+Storage server CAPEX,12.25,EUR mm,Storage servers x unit cost
+Network CAPEX,6.59,EUR mm,% of server CAPEX
+Facility CAPEX,32.6,EUR mm,Design MW x facility EUR/MW
+Total CAPEX,75.83,EUR mm,IT + network + facility
+Annual energy,23797.0,MWh/year,"Facility MW x 8,760"
+Electricity price used,209.0,EUR/MWh,Country parameter
+Annual power OPEX,4.97,EUR mm/year,MWh x EUR/MWh
+Annual non-power OPEX,3.41,EUR mm/year,% of total CAPEX
+Total annual OPEX,8.39,EUR mm/year,Power + non-power

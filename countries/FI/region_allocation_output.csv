@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Design MW,Estimated racks,Indicative facility CAPEX (EUR mm),Resilience role,Notes
+Helsinki - Uusimaa,Primary civil cloud,0.405,1.75,21.7,17.5,Active-active,"Valtori estate, FICIX, C-Lion1 landing; 30 min from Tallinn."
+Tampere - Pirkanmaa,Sovereign secondary,0.27,1.17,14.5,11.7,Active-active,"Inland, 180 km separation, strong grid."
+Oulu / North,Government / continuity,0.225,0.97,12.1,9.7,Active-active,"Cheapest power, free cooling, far from the frontier; adds ~10 ms."
+Kajaani - Kuopio,Strategic reserve,0.1,0.43,5.4,4.3,Warm reserve,LUMI (Kajaani) proves power and cooling for large loads.

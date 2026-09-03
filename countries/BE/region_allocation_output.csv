@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Design MW,Estimated racks,Indicative facility CAPEX (EUR mm),Resilience role,Notes
+Brussels - Flemish Brabant,Primary civil cloud,0.405,3.53,44.7,35.3,Active-active,"Federal institutions, BNIX, Smals/G-Cloud estate; Elia connection queue is the constraint."
+Wallonia / Mons - Charleroi,Sovereign secondary,0.27,2.35,29.8,23.5,Active-active,Existing hyperscale cluster (St. Ghislain) proves power and fibre; south of Meuse flood zone.
+Antwerp - Limburg,Government / continuity,0.225,1.96,24.8,19.6,Active-active,"Northern separation, port/industrial grid."
+Liege - Ardennes,Strategic reserve,0.1,0.87,11.0,8.7,Warm reserve,Eastern reserve; avoid 2021 Vesdre/Ourthe flood plains.

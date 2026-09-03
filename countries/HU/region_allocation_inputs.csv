@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Resilience role,Notes
+Budapest,Primary civil cloud,0.405,Active-active,"NISZ KAK estate, BIX; Danube flood zoning applies."
+Debrecen / East,Sovereign secondary,0.27,Active-active,Industrial grid growth; 130 km from the Ukrainian border - hardened design.
+Szeged - Pecs / South,Government / continuity,0.225,Active-active,"Solar belt, southern separation."
+Gyor / West,Strategic reserve,0.1,Warm reserve,Closest to Vienna/Bratislava transit; reserve.

@@ -1,0 +1,8 @@
+Workload,Class,CPU cores required,GPU eq. required,Logical storage (PB),Availability factor,Notes
+Digital identity / Bulgarian eID,Critical government,6400,0,1.4,1.5,Scaled from NL baseline x0.36 (identity load tracks citizens; fixed platform floor for small states).
+Core government applications,Government,18300,0,6.0,1.35,Scaled from NL baseline x0.33 (transactional load tracks citizens and the size of the administration).
+Data platforms & analytics,Government data,8000,16,13.7,1.25,Scaled from NL baseline x0.23 (data volume tracks citizens and economic activity).
+AI / sovereign model serving,AI,1800,48,1.2,1.3,Scaled from NL baseline x0.10 (AI capacity is an economic-policy choice; tracks GDP).
+Defense classified compute,Defense,16100,136,8.0,1.5,Scaled from NL baseline x0.54 (tracks population; frontline states carry a higher defense share).
+Cybersecurity / SOC / telemetry,Security,9400,16,10.7,1.4,Scaled from NL baseline x0.43 (telemetry tracks the digital estate; high fixed floor because a SOC has a minimum viable size).
+Scientific / public research,Research,2600,16,2.0,1.15,Scaled from NL baseline x0.10 (research HPC is discretionary; tracks GDP).

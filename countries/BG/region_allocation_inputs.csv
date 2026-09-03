@@ -1,0 +1,5 @@
+Region,Role,Share of design load,Resilience role,Notes
+Sofia,Primary civil cloud,0.405,Active-active,"SHPC estate, BIX/NetIX, EuroHPC Discoverer; seismic design required."
+Plovdiv,Sovereign secondary,0.27,Active-active,"Second metro, 150 km separation, Maritsa industrial grid."
+North-central / Veliko Tarnovo - Pleven,Government / continuity,0.225,Active-active,"Inland, away from the Black Sea frontier and Vrancea influence."
+Varna,Strategic reserve,0.1,Warm reserve,"Cable landings, but Black Sea exposure - reserve/edge only."

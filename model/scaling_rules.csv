@@ -1,0 +1,8 @@
+Workload,Population weight,Gov employment weight,GDP weight,Small-country floor,Frontline multiplier,Rationale
+Digital identity / DigiD,1.0,0.0,0.0,0.08,1.0,identity load tracks citizens; fixed platform floor for small states
+Core government applications,0.5,0.5,0.0,0.08,1.0,transactional load tracks citizens and the size of the administration
+Data platforms & analytics,0.5,0.0,0.5,0.08,1.0,data volume tracks citizens and economic activity
+AI / sovereign model serving,0.0,0.0,1.0,0.06,1.0,AI capacity is an economic-policy choice; tracks GDP
+Defense classified compute,1.0,0.0,0.0,0.10,1.5,tracks population; frontline states carry a higher defense share
+Cybersecurity / SOC / telemetry,0.7,0.3,0.0,0.15,1.25,telemetry tracks the digital estate; high fixed floor because a SOC has a minimum viable size
+Scientific / public research,0.0,0.0,1.0,0.05,1.0,research HPC is discretionary; tracks GDP
