@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+
+/*
+ * Warm Neutral + Terracotta, from ~/dev/design/DESIGN_SYSTEMS.md.
+ *
+ * The system's raw -> semantic token split is kept: raw hexes are defined once, and
+ * everything downstream refers to a role (--color-fg-secondary), never to a colour
+ * name. Swapping palettes then touches one block.
+ *
+ * Dark mode is *selected*, not an automatic inversion: its steps are re-derived and
+ * separately validated against the dark surface (see src/utils/palette.ts).
+ */
+@theme {
+  /* Raw ---------------------------------------------------------------- */
+  --color-ivory: #f5f2e9;
+  --color-cloud: #faf9f5;
+  --color-clay: #d97757;
+  --color-clay-dark: #a8462b;
+  --color-slate: #262625;
+  --color-sage: #b5b2a4;
+  --color-rule: #e3ded0;
+
+  /* Semantic ----------------------------------------------------------- */
+  --color-bg-page: var(--color-ivory);
+  --color-bg-card: var(--color-cloud);
+  --color-bg-emphasis: #f7e9e3;
+  --color-fg-primary: var(--color-slate);
+  --color-fg-secondary: #6b6a63;
+  --color-fg-muted: #898781;
+  --color-border: var(--color-rule);
+  --color-accent: var(--color-clay);
+  --color-accent-text: var(--color-clay-dark);
+
+  /* Chart surfaces, matching the validated palette in src/utils/palette.ts */
+  --color-chart-surface: #faf9f5;
+  --color-gridline: #e3ded0;
+  --color-baseline: #b5b2a4;
+
+  /* Scales ------------------------------------------------------------- */
+  --text-axis: 11px;
+  --text-body: 14px;
+  --text-stat: 30px;
+}
+
+/*
+ * Dark mode. Explicit toggle wins over the OS in both directions, so every token is
+ * redefined in both blocks rather than relying on a media query alone.
+ */
+@layer base {
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --color-bg-page: #0d0d0d;
+      --color-bg-card: #1a1a19;
+      --color-bg-emphasis: #2a1a13;
+      --color-fg-primary: #ffffff;
+      --color-fg-secondary: #c3c2b7;
+      --color-fg-muted: #898781;
+      --color-border: #2c2c2a;
+      --color-accent: #d17a58;
+      --color-accent-text: #e2926f;
+      --color-chart-surface: #1a1a19;
+      --color-gridline: #2c2c2a;
+      --color-baseline: #383835;
+    }
+  }
+
+  :root[data-theme='dark'] {
+    --color-bg-page: #0d0d0d;
+    --color-bg-card: #1a1a19;
+    --color-bg-emphasis: #2a1a13;
+    --color-fg-primary: #ffffff;
+    --color-fg-secondary: #c3c2b7;
+    --color-fg-muted: #898781;
+    --color-border: #2c2c2a;
+    --color-accent: #d17a58;
+    --color-accent-text: #e2926f;
+    --color-chart-surface: #1a1a19;
+    --color-gridline: #2c2c2a;
+    --color-baseline: #383835;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    background-color: var(--color-bg-page);
+    color: var(--color-fg-primary);
+    font-family:
+      Inter,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+    font-size: var(--text-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Wide content scrolls inside its own container; the page never scrolls sideways. */
+  .scroll-x {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+/* Print: the /poster and /country routes are printed to PDF by headless Chrome. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+}

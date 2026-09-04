@@ -120,9 +120,18 @@ operates the sovereign cloud, and on whose technology).
 which would invert the model. It is not.
 
 `capacity_model.py` computes `sites = max(sites_by_mw, min_sites)`, and the hand-set `min_sites` floor
-binds for **26 of 27 countries** — Germany alone is MW-driven. NL's storage would have to grow roughly 10×
-to change its site count. The finding that matters more: site count is currently a *political* parameter,
-not an engineering result, and the app should show that rather than hide it.
+strictly binds for **24 of 27 countries**. Germany alone genuinely needs more sites than its floor (6
+against a floor of 4); France and Italy sit exactly at the tie, where `sites_by_mw == min_sites == 4`, so
+their floor coincides with the engineering answer rather than overriding it. NL's storage would have to
+grow roughly 10× to change its site count.
+
+The finding that matters more: site count is mostly a *political* parameter, not an engineering result,
+and the app should show that rather than hide it.
+
+**Corrected 2026-09-04.** This entry first read "26 of 27, Germany alone" — inherited from an early survey
+that counted the France and Italy ties as floor-bound and repeated without checking. The TS/Python parity
+test caught it by asserting the count. Recomputed from the model: 24 strictly floor-bound, 3 at or above
+their floor (DE, FR, IT), of which only DE exceeds it.
 
 ### 13. Stdlib-only Python, no pytest
 **2026-09-03.** The model and its tests use only the standard library.

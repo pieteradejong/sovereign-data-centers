@@ -213,8 +213,9 @@ def build(c: dict, nl: dict, s, wl_rows: list[dict], nl_s) -> dict:
             "sites_by_mw": s.sites_by_mw,
             "sites": s.sites,
             "avg_mw_per_site": round(s.avg_mw_per_site, 2),
-            # Which constraint actually set the site count. For 26 of 27 it is the
-            # hand-set minimum, not the engineering result — the model's central irony.
+            # Which constraint actually set the site count. For 24 of 27 it is the
+            # hand-set minimum rather than the engineering result — the model's central
+            # irony. DE alone exceeds its floor; FR and IT tie with theirs exactly.
             "binding_constraint": "min_sites" if s.sites > s.sites_by_mw else "capacity",
             "capex_total": round(s.capex_total, 1),
             "capex_facility": round(s.capex_facility, 1),
