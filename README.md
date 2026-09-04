@@ -7,22 +7,45 @@ parameterized model and are meant to be refined country by country.
 ## Layout
 
 ```
+init.sh / run.sh / test.sh   set up, run, and fully test the project
 model/
   assumptions.csv            shared engineering/economic defaults (the Dutch "working assumptions")
   eu27_parameters.csv        one row per country: population, GDP, public-admin employment, power price,
-                             renewables, land, frontline/grid/seismic flags, existing gov cloud, digital ID, IXPs
+                             renewables, land, flags, existing gov cloud, digital ID, IXPs, and the
+                             legal/regulatory posture columns (certification, classification, procurement)
   scaling_rules.csv          how each workload class scales from the NL baseline (weights, floors, frontline multiplier)
+  migration_phases.csv       workload class -> migration phase
   capacity_model.py          workloads -> servers -> racks -> MW -> sites -> CAPEX/OPEX, for any country dir
+  country_data.py            assembles every fact about a country into one dict (the single source)
   generate_countries.py      builds countries/<ISO>/ inputs + GOAL.md for all 27, runs the model, writes SUMMARY.md
+  export_json.py             writes web/public/data/eu27.json from the same dict
   eu27_results.csv           one result row per country (generated)
 countries/
   SUMMARY.md                 cross-country table (generated)
   NL/                        the reference case: hand-written GOAL.md, xlsx model, inputs, infographic, TODO, plan
   DE/ FR/ ... (x26)          params.csv, workloads_inputs.csv, region_allocation_inputs.csv (generated inputs, edit freely)
-                             GOAL.md (generated write-up), facility_summary.csv, region_allocation_output.csv (outputs)
+                             GOAL.md (generated 12-section brief), facility_summary.csv,
+                             region_allocation_output.csv, migration_phases.csv (outputs)
+web/                         React + Vite visualization app; reads the JSON bundle, no server
+tests/                       stdlib unittest suite for the model and the data
+DECISIONS.md                 why every choice was made
+CHANGELOG.md                 what changed and when
 ```
 
+Python is the source of truth. The markdown briefs, the JSON bundle, the app and the exports are all
+renderings of one `country_data.build()` dict, so they cannot disagree with each other.
+
 ## Running
+
+```
+./init.sh                                   # set up from scratch (checks tools, installs, builds data)
+./run.sh                                    # dev server on http://localhost:5173
+./run.sh data                               # regenerate country files, briefs and the JSON bundle
+./run.sh help                               # every command
+./test.sh                                   # the full gate: model, types, lint, unit, build, e2e, a11y
+```
+
+The model on its own, without the app:
 
 ```
 python3 model/capacity_model.py NL          # one country
@@ -66,6 +89,13 @@ Same as the Dutch case, only more so: every input is a working assumption or a s
 electricity prices are 2025-S2 band-IC averages rather than negotiated tariffs, and public-administration
 employment is Eurostat NACE section O (excludes public health and education). The per-country sovereign-cloud
 and digital-ID entries were researched in September 2026 and will date.
+
+**The legal and regulatory entries are a different kind of claim from the rest.** Capacity figures are
+openly scaled placeholders, and the "working assumption" framing covers them honestly. The certification
+schemes, classification ladders and procurement routes are assertions about what real jurisdictions
+actually require, and they have **not yet been verified against primary sources**. Nothing here should be
+relied on for a procurement or policy decision until that verification is done — see `DECISIONS.md` #25
+for the gate, and open an issue if you can correct an entry.
 
 ## Reference case
 

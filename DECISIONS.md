@@ -289,3 +289,106 @@ argument somewhere else.
 Briefing documents get photocopied, so a chart that dies in black and white dies in exactly the setting
 this book is for. Mono print-on-demand is also roughly a third the unit cost at ~300 pages. The web and PDF
 editions keep full colour.
+
+---
+
+## The web app
+
+### 29. Heatmaps are HTML tables, not SVG
+**2026-09-04.** The sovereignty matrix and workload heatmap render as `<table>` elements with a `<button>`
+per cell, rather than as SVG `<rect>` grids.
+
+Every cell has to be individually focusable and screen-reader addressable. With real DOM elements that is
+free — a button gets keyboard focus and an `aria-label` naming its row, column and value. With SVG it
+means hand-plumbing roles, tabindex and labels onto shapes that have none of it by default. The axe
+accessibility tests passed on the first run as a direct result.
+
+The cost is that SVG's expressiveness is unavailable for these two charts. That is a fair trade for the
+two views the whole site is built around.
+
+*Would change if:* a chart needs geometry a table cannot express — which is exactly why the choropleth,
+when built, will be SVG.
+
+### 30. D3 is used as a maths library, not a charting library
+**2026-09-04.** Only `scaleLinear` and `scaleQuantize` are imported. No `d3.select`, no data joins.
+
+D3's DOM-manipulation half fights React, which owns the DOM. Its scales, projections and statistics are
+genuinely worth having. Using only the second half is deliberate.
+
+Known inefficiency: importing the `d3` meta-package pulls a 47 KB chunk to use two functions. Importing
+`d3-scale` directly would cut that to roughly 15 KB. Left as-is for now under decision 32.
+
+### 31. No Three.js, and no 3D
+**2026-09-04.** Considered and rejected.
+
+There is no third dimension in this data. A 3D rendering of a 27 × 8 ordinal matrix would occlude cells
+behind other cells and read worse than the flat grid, at roughly 600 KB. The one arguable case — a globe
+showing subsea cable landings — is decoration: the sovereignty argument in this project is jurisdictional,
+not geographic.
+
+### 32. Known improvements deliberately deferred
+**2026-09-04.** Three changes were identified as genuine improvements and consciously not made, to keep
+the codebase simple while the data is still unverified:
+
+- **`scaleQuantile` instead of `scaleQuantize`** in the workload heatmap. `scaleQuantize` splits the
+  domain evenly, and with Germany at 24,531 servers against Malta's 502 most countries fall into the
+  lightest bucket. `scaleQuantile` splits by rank, which is what a 27-row comparison wants. This is a real
+  legibility bug, not a preference.
+- **Sub-package imports** (`d3-scale` rather than `d3`), for the chunk-size reason in decision 30.
+- **The choropleth** (`/map`), which needs `d3-geo` with a conic projection. Cyprus and Malta are ~3,000 km
+  from Ireland, so an unprojected EU map wastes most of its area on ocean.
+
+Recorded here rather than lost, because "we knew and chose not to" is different from "we missed it".
+
+### 33. Scripts at the repo root, following the workspace template convention
+**2026-09-04.** `init.sh`, `run.sh` and `test.sh` sit flat at the root, matching
+`templates/rn-supabase` rather than the `scripts/` subdirectory used by the older general template.
+
+Conventions copied from `templates/ts-web/production-ready`: `set -e`, the `RED/GREEN/YELLOW/BLUE/NC`
+colour block, `print_info`/`print_success`/`print_error`, `case "${1:-...}"` dispatch, unknown command →
+error then help then exit 1.
+
+Four bugs in that template were deliberately **not** copied, and are worth fixing at source:
+
+| Template bug | Consequence |
+|---|---|
+| `"test": "vitest"` | Watch mode. `./run.sh test`, `run.sh health` and the pre-push hook all hang non-interactively |
+| `test:` config in both `vite.config.ts` and `vitest.config.ts` | The vite block is dead config; the standalone file wins |
+| `@vitest/coverage-v8` not installed | The 80% thresholds in `vitest.config.ts` silently cannot run |
+| `dist/` committed | Build output in git |
+
+### 34. The build date lives in `.build-epoch`
+**2026-09-04.** One file, read by all three scripts.
+
+It was first written as a literal in `run.sh` and `test.sh` and omitted from `init.sh` — so initialising a
+fresh clone regenerated the bundle with today's date and immediately made the committed file look stale.
+`test.sh` caught this on its first full run. A constant duplicated across three files is a constant that
+will disagree with itself.
+
+### 35. Accessibility defects found by testing, not by review
+**2026-09-04.** The axe suite found three real problems on first run:
+
+- `aria-sort` was on the sort `<button>` rather than the `<th>` that owns it — invalid ARIA.
+- `--color-fg-muted` (`#898781`) measures **3.21:1** against the page. That value comes from the design
+  system, where it is correct for axis ticks at the 3:1 graphical threshold, but it fails AA as body text.
+  Darkened to `#6f6d66` (4.63:1) so one token is safe everywhere it is used. Worth feeding back to
+  `~/dev/design/DESIGN_SYSTEMS.md`.
+- White on the terracotta accent measures **3.12:1**. Replaced with slate (4.85:1).
+
+None of these were visible to the palette validator, which checks chart colours against a surface, not
+arbitrary text-on-background pairs in a finished layout.
+
+### 36. Screenshots are part of testing, not a nicety
+**2026-09-04.** The rotated column headers in the matrix were clipped to `w-6`, rendering every dimension
+name as "Sov...", "Cert...", "Hyp...". Types passed, lint passed, axe passed, 15 E2E assertions passed —
+and the chart was unreadable.
+
+Nothing except looking at the rendered page catches that class of defect. The plan's "render it and look
+at it" step is load-bearing.
+
+### 37. The E2E suite binds a dedicated port
+**2026-09-04.** Playwright's preview server uses 4823 with `strictPort`, not Vite's default 4173.
+
+Another project in this workspace was already serving 4173. The preview server failed to bind, Playwright
+happily reused the existing one, and the tests ran green against a completely different application before
+this was noticed. `strictPort` turns that silent pass into a hard failure.

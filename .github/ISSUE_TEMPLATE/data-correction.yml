@@ -1,0 +1,43 @@
+name: Data correction
+description: Correct a figure or a legal/regulatory entry for a member state
+title: "[data] "
+labels: ["data-correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for correcting this. Every figure here is a working assumption and the
+        legal entries are unverified research, so corrections are genuinely useful.
+  - type: input
+    id: country
+    attributes:
+      label: Country
+      description: ISO code or name, e.g. DE or Germany
+    validations:
+      required: true
+  - type: input
+    id: field
+    attributes:
+      label: Field
+      description: Which value is wrong, e.g. certification_scheme, design_mw, procurement_vehicle
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: What it currently says
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What it should say
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: A link to the official instrument, register or government page. Not a news article.
+    validations:
+      required: true
