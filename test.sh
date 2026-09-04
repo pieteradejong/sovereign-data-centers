@@ -44,7 +44,10 @@ step() {
 }
 ok() { echo -e "${GREEN}    ✅ $1${NC}"; }
 
-export SOURCE_DATE_EPOCH=1788393600  # 2026-09-03, so regeneration is reproducible
+# The date stamped into generated files, kept in one place so init/run/test agree.
+# Pinned so regeneration is byte-reproducible: a diff then shows real changes rather
+# than today's date in 27 files.
+export SOURCE_DATE_EPOCH="$(cat "$ROOT/.build-epoch")"
 
 echo -e "${GREEN}Running the full test gate${NC}"
 

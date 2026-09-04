@@ -71,7 +71,7 @@ export function Heatmap({
         </button>
       </div>
 
-      <div className="scroll-x">
+      <div className="scroll-x pt-2">
         <table className="border-collapse text-xs">
           <caption className="sr-only">{caption}</caption>
           <thead>
@@ -84,23 +84,25 @@ export function Heatmap({
                 <th
                   key={c}
                   scope="col"
-                  className="p-1 align-bottom"
+                  className="relative h-28 w-7 p-0 align-bottom"
                   aria-sort={onSort ? (sortedBy === c ? 'descending' : 'none') : undefined}
                 >
-                  {onSort ? (
-                    <button
-                      type="button"
-                      onClick={() => onSort(c)}
-                      className="w-6 origin-bottom-left -rotate-45 whitespace-nowrap text-left text-[10px] text-[var(--color-fg-secondary)] hover:text-[var(--color-accent-text)]"
-                    >
-                      {colLabel(c)}
-                      {sortedBy === c ? ' ▾' : ''}
-                    </button>
-                  ) : (
-                    <span className="block w-6 origin-bottom-left -rotate-45 whitespace-nowrap text-left text-[10px] text-[var(--color-fg-secondary)]">
-                      {colLabel(c)}
-                    </span>
-                  )}
+                  <div className="absolute bottom-1 left-1/2 origin-bottom-left -rotate-45">
+                    {onSort ? (
+                      <button
+                        type="button"
+                        onClick={() => onSort(c)}
+                        className="whitespace-nowrap text-[10px] text-[var(--color-fg-secondary)] hover:text-[var(--color-accent-text)]"
+                      >
+                        {colLabel(c)}
+                        {sortedBy === c ? ' \u25be' : ''}
+                      </button>
+                    ) : (
+                      <span className="whitespace-nowrap text-[10px] text-[var(--color-fg-secondary)]">
+                        {colLabel(c)}
+                      </span>
+                    )}
+                  </div>
                 </th>
               ))}
             </tr>

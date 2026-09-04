@@ -19,9 +19,10 @@ print_error()   { echo -e "${RED}❌ $1${NC}"; }
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 
-# The date stamped into generated files. Pinned so regeneration is byte-reproducible
-# and a diff shows real changes rather than today's date in 27 files.
-export SOURCE_DATE_EPOCH=1788393600  # 2026-09-03
+# The date stamped into generated files, kept in one place so init/run/test agree.
+# Pinned so regeneration is byte-reproducible: a diff then shows real changes rather
+# than today's date in 27 files.
+export SOURCE_DATE_EPOCH="$(cat "$ROOT/.build-epoch")"
 
 check_deps() {
     if [ ! -d "$ROOT/web/node_modules" ]; then
