@@ -105,3 +105,72 @@ Moderate seismic (Ljubljana basin; Bovec 1998/2004); catastrophic Aug 2023 flood
 - Which body owns the sovereign core, and how are agencies compelled or incentivised to migrate?
 - Which regions federate with EU partners for mutual disaster recovery, and which stay national-only?
 - Site-size assumption: is the 12 MW planning unit right for Slovenia, or should sites be smaller?
+
+## 10. Legal and regulatory posture
+
+Every member state shares one baseline: GDPR for personal data, NIS2 for the security of essential
+entities, the Data Act for switching and access, and the EU Cloud Services Scheme (EUCS) still unresolved
+on the sovereignty requirements that would matter most here. That baseline governs *processing*. It does
+not, on its own, place infrastructure under national control - which is the gap a sovereign core exists
+to close.
+
+| | |
+|---|---|
+| Governing instrument | State cloud (Drzavni racunalniski oblak, DRO) under the Ministry of Digital Transformation |
+| Cloud certification | No national scheme; ISO 27001 |
+| Data classification | Classified Information Act: Interno / Zaupno / Tajno / Strogo tajno |
+| Procurement route | Ministry of Public Administration central procurement |
+
+There is no national cloud certification scheme; assurance rests on ISO 27001 and contract terms. The choice is to adopt EUCS when it lands or to recognise a peer scheme (BSI C5, SecNumCloud, ENS) by equivalence - writing a national scheme from scratch for a state this size is not worth the effort.
+
+The classification ladder is the practical control: it decides which tier of data may leave the
+jurisdiction at all, and it should be mapped onto the four migration phases in section 12 before any
+procurement starts. Buying capacity before deciding what may sit on it is how sovereign programmes end up
+with expensive infrastructure hosting the wrong workloads.
+
+**Foreign jurisdiction exposure.** No in-country region; limited Microsoft use via EU regions
+
+Dependency on US hyperscalers is **high**: they carry significant government workloads, most visibly productivity and collaboration. The sovereign core does not displace that overnight; it establishes somewhere for the workloads that must never have been there in the first place. Under the US CLOUD Act and FISA 702, a provider subject to US jurisdiction can face a lawful
+order for data it holds, regardless of where the data physically sits. Data residency in-country is
+therefore necessary but not sufficient; what matters is who holds the keys and who can be compelled.
+
+## 11. Current state and provider landscape
+
+| | |
+|---|---|
+| Government cloud | Drzavni racunalniski oblak (DRO) - Ministry of Digital Transformation state cloud in the national government DC (Ljubljana) + DR site; EuroHPC Vega (Maribor) |
+| Maturity | operational |
+| Digital identity | SI-PASS / smsPASS / eOsebna eID card |
+| In-country commercial regions | 0 |
+| Interconnection | SIX (ARNES) Ljubljana; no major landing (Koper) |
+
+An operating government platform already exists; the sovereign core should be its next generation, not a parallel build beside it.
+
+Against that starting point, the modelled sovereign core is **1.4 MW of design load across
+3 site(s)**, or roughly 570 servers. The gap between what runs today and that
+figure is the actual programme; the capacity model in sections 4-6 sizes the destination, not the journey.
+
+## 12. Migration path and cost
+
+Workloads are sequenced by how badly loss of control would hurt, not by how easy they are to move. The
+phases below are derived from the workload classes in `model/migration_phases.csv`; per-country figures
+are in `migration_phases.csv` in this directory.
+
+| Phase | Scope | Servers | Design MW | CAPEX | Cumulative | Hybrid-eligible |
+|---|---|---:|---:|---:|---:|---|
+| 1 | Sovereign core | 169 | 0.3 | EUR 6 m | 19% | no |
+| 2 | Security and defense | 215 | 0.6 | EUR 14 m | 60% | no |
+| 3 | State record | 109 | 0.2 | EUR 6 m | 78% | no |
+| 4 | Elective | 77 | 0.3 | EUR 7 m | 100% | no |
+
+**Phase 1 is the number that matters: EUR 6 m for 0.3 MW,
+19% of total CAPEX.** That is the floor - identity and core government
+services - below which no hybrid arrangement helps, because these workloads cannot be foreign-hosted under
+any sovereignty posture worth the name. It is also, notably, a small fraction of the full build: sovereignty
+for the workloads that define the state is cheaper than the headline figure suggests.
+
+Phases 2 and 3 follow on clearance and legal constraints rather than cost. With no in-country commercial region, even the elective tier has nowhere in-jurisdiction to go: either it stays in the sovereign core, sized accordingly, or it leaves the jurisdiction under explicit terms.
+
+Sequencing caveat: the CAPEX split above apportions facility cost by each phase's share of IT load, which
+assumes phases are built into a shared facility programme rather than as separate buildings. Building
+phase 1 alone, on its own site, costs disproportionately more - the facility is largely a fixed cost.

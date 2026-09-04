@@ -329,6 +329,72 @@ def write_goal(d: dict) -> str:
         return "\n".join(lines)
 
     hard = "hardened (frontline)" if frontline else "standard"
+
+    # --- Sections 10-12: legal posture, landscape, migration ------------------
+    def phase_table():
+        lines = ["| Phase | Scope | Servers | Design MW | CAPEX | Cumulative | Hybrid-eligible |", "|---|---|---:|---:|---:|---:|---|"]
+        for p in d["phases"]:
+            lines.append(
+                f"| {p['Phase']} | {p['Phase name']} | {p['Servers']:,} | {p['Design MW']:.1f} | "
+                f"{fmt_money(p['CAPEX (EUR mm)'])} | {p['Cumulative CAPEX %']:.0f}% | {p['Hybrid eligible']} |"
+            )
+        return "\n".join(lines)
+
+    cert_note = {
+        "stringent": (
+            f"{c['certification_scheme']} is among the most demanding cloud assurance regimes in the Union. "
+            "The sovereign core inherits a mature control baseline and, more usefully, an existing qualification "
+            "path that suppliers already know how to pass."
+        ),
+        "national": (
+            f"A binding national standard exists ({c['certification_scheme']}), so the sovereign core can be "
+            "certified against something already recognised rather than inventing its own controls."
+        ),
+        "baseline": (
+            "There is no national cloud certification scheme; assurance rests on ISO 27001 and contract terms. "
+            "The choice is to adopt EUCS when it lands or to recognise a peer scheme (BSI C5, SecNumCloud, ENS) "
+            "by equivalence - writing a national scheme from scratch for a state this size is not worth the effort."
+        ),
+    }[c["certification_strength"]]
+
+    dep_note = {
+        "critical": (
+            "Dependency on US hyperscalers is **critical**: they hold production government workloads and there is "
+            "no national alternative in service. Migration is therefore a contractual and political problem before "
+            "it is a technical one, and the exit terms of existing agreements are the first thing to read."
+        ),
+        "high": (
+            "Dependency on US hyperscalers is **high**: they carry significant government workloads, most visibly "
+            "productivity and collaboration. The sovereign core does not displace that overnight; it establishes "
+            "somewhere for the workloads that must never have been there in the first place."
+        ),
+        "medium": (
+            "Dependency on US hyperscalers is **moderate**: national arrangements carry part of the estate, and the "
+            "sovereign core extends an existing position rather than reversing one."
+        ),
+        "low": (
+            "Dependency on US hyperscalers is **low** by EU standards. The strategic risk here is complacency: a "
+            "sovereign posture that is not exercised degrades quietly."
+        ),
+    }[c["hyperscaler_dependency"]]
+
+    maturity_note = {
+        "none": "There is no operating government cloud to build on; the sovereign core would be a greenfield build.",
+        "pilot": "What exists is a pilot rather than an operating platform; the sovereign core would be its first production incarnation.",
+        "operational": "An operating government platform already exists; the sovereign core should be its next generation, not a parallel build beside it.",
+        "federated": "A federated government cloud is already in production. The open question is consolidation and governance, not construction.",
+    }[c["gov_cloud_maturity"]]
+
+    p1 = d["phases"][0]
+    elective = [p for p in d["phases"] if p["Hybrid eligible"] == "yes"]
+    hybrid_note = (
+        f"Phase 4 can use in-country commercial capacity ({hs} live region(s)) under sovereign-held keys, "
+        "which is what keeps the sovereign core small."
+        if elective
+        else "With no in-country commercial region, even the elective tier has nowhere in-jurisdiction to go: "
+        "either it stays in the sovereign core, sized accordingly, or it leaves the jurisdiction under explicit terms."
+    )
+
     body = f"""# {name} - Sovereign Government Data Center Network
 
 > Generated {gen_date()} by `model/generate_countries.py` from the Dutch reference case
@@ -422,6 +488,70 @@ fault or flood zone). They are to be replaced by the scored site selection in wo
 - Which body owns the sovereign core, and how are agencies compelled or incentivised to migrate?
 - {'Out-of-country reserve: which partner state, under what treaty?' if (frontline or micro) else 'Which regions federate with EU partners for mutual disaster recovery, and which stay national-only?'}
 - Site-size assumption: is the 12 MW planning unit right for {name}, or should sites be {'smaller' if s.design_mw < 20 else 'larger'}?
+
+## 10. Legal and regulatory posture
+
+Every member state shares one baseline: GDPR for personal data, NIS2 for the security of essential
+entities, the Data Act for switching and access, and the EU Cloud Services Scheme (EUCS) still unresolved
+on the sovereignty requirements that would matter most here. That baseline governs *processing*. It does
+not, on its own, place infrastructure under national control - which is the gap a sovereign core exists
+to close.
+
+| | |
+|---|---|
+| Governing instrument | {c['legal_instrument']} |
+| Cloud certification | {c['certification_scheme']} |
+| Data classification | {c['data_classification']} |
+| Procurement route | {c['procurement_vehicle']} |
+
+{cert_note}
+
+The classification ladder is the practical control: it decides which tier of data may leave the
+jurisdiction at all, and it should be mapped onto the four migration phases in section 12 before any
+procurement starts. Buying capacity before deciding what may sit on it is how sovereign programmes end up
+with expensive infrastructure hosting the wrong workloads.
+
+**Foreign jurisdiction exposure.** {c['hyperscaler_gov_exposure']}
+
+{dep_note} Under the US CLOUD Act and FISA 702, a provider subject to US jurisdiction can face a lawful
+order for data it holds, regardless of where the data physically sits. Data residency in-country is
+therefore necessary but not sufficient; what matters is who holds the keys and who can be compelled.
+
+## 11. Current state and provider landscape
+
+| | |
+|---|---|
+| Government cloud | {c['sovereign_cloud_initiative']} |
+| Maturity | {c['gov_cloud_maturity']} |
+| Digital identity | {c['digital_id']} |
+| In-country commercial regions | {hs} |
+| Interconnection | {c['ixp']} |
+
+{maturity_note}
+
+Against that starting point, the modelled sovereign core is **{s.design_mw:.1f} MW of design load across
+{s.sites} site(s)**, or roughly {s.total_servers:,} servers. The gap between what runs today and that
+figure is the actual programme; the capacity model in sections 4-6 sizes the destination, not the journey.
+
+## 12. Migration path and cost
+
+Workloads are sequenced by how badly loss of control would hurt, not by how easy they are to move. The
+phases below are derived from the workload classes in `model/migration_phases.csv`; per-country figures
+are in `migration_phases.csv` in this directory.
+
+{phase_table()}
+
+**Phase 1 is the number that matters: {fmt_money(p1['CAPEX (EUR mm)'])} for {p1['Design MW']:.1f} MW,
+{p1['Cumulative CAPEX %']:.0f}% of total CAPEX.** That is the floor - identity and core government
+services - below which no hybrid arrangement helps, because these workloads cannot be foreign-hosted under
+any sovereignty posture worth the name. It is also, notably, a small fraction of the full build: sovereignty
+for the workloads that define the state is cheaper than the headline figure suggests.
+
+Phases 2 and 3 follow on clearance and legal constraints rather than cost. {hybrid_note}
+
+Sequencing caveat: the CAPEX split above apportions facility cost by each phase's share of IT load, which
+assumes phases are built into a shared facility programme rather than as separate buildings. Building
+phase 1 alone, on its own site, costs disproportionately more - the facility is largely a fixed cost.
 """
     return body
 

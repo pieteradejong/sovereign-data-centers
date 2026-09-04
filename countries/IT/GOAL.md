@@ -107,3 +107,72 @@ High seismic/volcanic (Apennines, Naples, Etna); Po/Emilia floods (2023); gas-im
 - Which body owns the sovereign core, and how are agencies compelled or incentivised to migrate?
 - Which regions federate with EU partners for mutual disaster recovery, and which stay national-only?
 - Site-size assumption: is the 12 MW planning unit right for Italy, or should sites be larger?
+
+## 10. Legal and regulatory posture
+
+Every member state shares one baseline: GDPR for personal data, NIS2 for the security of essential
+entities, the Data Act for switching and access, and the EU Cloud Services Scheme (EUCS) still unresolved
+on the sovereignty requirements that would matter most here. That baseline governs *processing*. It does
+not, on its own, place infrastructure under national control - which is the gap a sovereign core exists
+to close.
+
+| | |
+|---|---|
+| Governing instrument | Polo Strategico Nazionale (PSN) with mandatory migration deadlines for central administrations |
+| Cloud certification | ACN cloud qualification (formerly AgID) with ordinary/critical/strategic data tiers |
+| Data classification | Legge 124/2007: Riservato / Riservatissimo / Segreto / Segretissimo |
+| Procurement route | Consip central purchasing; PSN concession held by TIM, CDP, Leonardo and Sogei |
+
+A binding national standard exists (ACN cloud qualification (formerly AgID) with ordinary/critical/strategic data tiers), so the sovereign core can be certified against something already recognised rather than inventing its own controls.
+
+The classification ladder is the practical control: it decides which tier of data may leave the
+jurisdiction at all, and it should be mapped onto the four migration phases in section 12 before any
+procurement starts. Buying capacity before deciding what may sit on it is how sovereign programmes end up
+with expensive infrastructure hosting the wrong workloads.
+
+**Foreign jurisdiction exposure.** PSN runs Azure, Google and Oracle technology under Italian operator control; strategic data must stay on the national stack
+
+Dependency on US hyperscalers is **moderate**: national arrangements carry part of the estate, and the sovereign core extends an existing position rather than reversing one. Under the US CLOUD Act and FISA 702, a provider subject to US jurisdiction can face a lawful
+order for data it holds, regardless of where the data physically sits. Data residency in-country is
+therefore necessary but not sufficient; what matters is who holds the keys and who can be compelled.
+
+## 11. Current state and provider landscape
+
+| | |
+|---|---|
+| Government cloud | Polo Strategico Nazionale (PSN) - operational since 2023, TIM/Leonardo/CDP/Sogei consortium, 4 DC pairs; ACN cloud qualification regime (Strategia Cloud Italia) |
+| Maturity | federated |
+| Digital identity | SPID / CIE (IT-Wallet in rollout) |
+| In-country commercial regions | 4 |
+| Interconnection | MIX Milan; NAMEX Rome; landings Genoa, Sicily, Bari |
+
+A federated government cloud is already in production. The open question is consolidation and governance, not construction.
+
+Against that starting point, the modelled sovereign core is **36.1 MW of design load across
+4 site(s)**, or roughly 14,774 servers. The gap between what runs today and that
+figure is the actual programme; the capacity model in sections 4-6 sizes the destination, not the journey.
+
+## 12. Migration path and cost
+
+Workloads are sequenced by how badly loss of control would hurt, not by how easy they are to move. The
+phases below are derived from the workload classes in `model/migration_phases.csv`; per-country figures
+are in `migration_phases.csv` in this directory.
+
+| Phase | Scope | Servers | Design MW | CAPEX | Cumulative | Hybrid-eligible |
+|---|---|---:|---:|---:|---:|---|
+| 1 | Sovereign core | 4,423 | 8.7 | EUR 166 m | 19% | no |
+| 2 | Security and defense | 4,872 | 12.7 | EUR 308 m | 55% | no |
+| 3 | State record | 3,131 | 6.5 | EUR 163 m | 74% | no |
+| 4 | Elective | 2,348 | 8.3 | EUR 219 m | 100% | yes |
+
+**Phase 1 is the number that matters: EUR 166 m for 8.7 MW,
+19% of total CAPEX.** That is the floor - identity and core government
+services - below which no hybrid arrangement helps, because these workloads cannot be foreign-hosted under
+any sovereignty posture worth the name. It is also, notably, a small fraction of the full build: sovereignty
+for the workloads that define the state is cheaper than the headline figure suggests.
+
+Phases 2 and 3 follow on clearance and legal constraints rather than cost. Phase 4 can use in-country commercial capacity (4 live region(s)) under sovereign-held keys, which is what keeps the sovereign core small.
+
+Sequencing caveat: the CAPEX split above apportions facility cost by each phase's share of IT load, which
+assumes phases are built into a shared facility programme rather than as separate buildings. Building
+phase 1 alone, on its own site, costs disproportionately more - the facility is largely a fixed cost.

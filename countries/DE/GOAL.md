@@ -106,3 +106,72 @@ Low seismic; Ahr/Rhine/Elbe floods (2021); Frankfurt grid saturated (multi-year 
 - Which body owns the sovereign core, and how are agencies compelled or incentivised to migrate?
 - Which regions federate with EU partners for mutual disaster recovery, and which stay national-only?
 - Site-size assumption: is the 12 MW planning unit right for Germany, or should sites be larger?
+
+## 10. Legal and regulatory posture
+
+Every member state shares one baseline: GDPR for personal data, NIS2 for the security of essential
+entities, the Data Act for switching and access, and the EU Cloud Services Scheme (EUCS) still unresolved
+on the sovereignty requirements that would matter most here. That baseline governs *processing*. It does
+not, on its own, place infrastructure under national control - which is the gap a sovereign core exists
+to close.
+
+| | |
+|---|---|
+| Governing instrument | Onlinezugangsgesetz; IT-Planungsrat Deutsche Verwaltungscloud-Strategie (DVC) |
+| Cloud certification | BSI C5 (Cloud Computing Compliance Criteria Catalogue) |
+| Data classification | Verschlusssachenanweisung (VSA): VS-NfD / VS-Vertraulich / Geheim / Streng Geheim |
+| Procurement route | Beschaffungsamt des BMI and Kaufhaus des Bundes; ITZBund as federal operator |
+
+BSI C5 (Cloud Computing Compliance Criteria Catalogue) is among the most demanding cloud assurance regimes in the Union. The sovereign core inherits a mature control baseline and, more usefully, an existing qualification path that suppliers already know how to pass.
+
+The classification ladder is the practical control: it decides which tier of data may leave the
+jurisdiction at all, and it should be mapped onto the four migration phases in section 12 before any
+procurement starts. Buying capacity before deciding what may sit on it is how sovereign programmes end up
+with expensive infrastructure hosting the wrong workloads.
+
+**Foreign jurisdiction exposure.** Delos Cloud (SAP/Arvato on Azure, BSI-aligned) for federal workloads; M365 use contested by the Datenschutzkonferenz
+
+Dependency on US hyperscalers is **moderate**: national arrangements carry part of the estate, and the sovereign core extends an existing position rather than reversing one. Under the US CLOUD Act and FISA 702, a provider subject to US jurisdiction can face a lawful
+order for data it holds, regardless of where the data physically sits. Data residency in-country is
+therefore necessary but not sufficient; what matters is who holds the keys and who can be compelled.
+
+## 11. Current state and provider landscape
+
+| | |
+|---|---|
+| Government cloud | Deutsche Verwaltungscloud (DVC) federated launched Mar 2025 (IT-Planungsrat/govdigital/FITKO); Bundescloud (ITZBund); Delos Cloud (SAP/Arvato on Azure, BSI-aligned); openDesk (ZenDiS); STACKIT/IONOS/T-Cloud; BSI C5 |
+| Maturity | federated |
+| Digital identity | Online-Ausweis eID + BundID/DeutschlandID |
+| In-country commercial regions | 6 |
+| Interconnection | DE-CIX Frankfurt (world's largest) Hamburg Munich; Norden/Sylt/Rostock landings |
+
+A federated government cloud is already in production. The open question is consolidation and governance, not construction.
+
+Against that starting point, the modelled sovereign core is **60.4 MW of design load across
+6 site(s)**, or roughly 24,531 servers. The gap between what runs today and that
+figure is the actual programme; the capacity model in sections 4-6 sizes the destination, not the journey.
+
+## 12. Migration path and cost
+
+Workloads are sequenced by how badly loss of control would hurt, not by how easy they are to move. The
+phases below are derived from the workload classes in `model/migration_phases.csv`; per-country figures
+are in `migration_phases.csv` in this directory.
+
+| Phase | Scope | Servers | Design MW | CAPEX | Cumulative | Hybrid-eligible |
+|---|---|---:|---:|---:|---:|---|
+| 1 | Sovereign core | 7,476 | 14.7 | EUR 281 m | 20% | no |
+| 2 | Security and defense | 7,319 | 18.8 | EUR 456 m | 51% | no |
+| 3 | State record | 5,092 | 10.5 | EUR 265 m | 70% | no |
+| 4 | Elective | 4,644 | 16.4 | EUR 433 m | 100% | yes |
+
+**Phase 1 is the number that matters: EUR 281 m for 14.7 MW,
+20% of total CAPEX.** That is the floor - identity and core government
+services - below which no hybrid arrangement helps, because these workloads cannot be foreign-hosted under
+any sovereignty posture worth the name. It is also, notably, a small fraction of the full build: sovereignty
+for the workloads that define the state is cheaper than the headline figure suggests.
+
+Phases 2 and 3 follow on clearance and legal constraints rather than cost. Phase 4 can use in-country commercial capacity (6 live region(s)) under sovereign-held keys, which is what keeps the sovereign core small.
+
+Sequencing caveat: the CAPEX split above apportions facility cost by each phase's share of IT load, which
+assumes phases are built into a shared facility programme rather than as separate buildings. Building
+phase 1 alone, on its own site, costs disproportionately more - the facility is largely a fixed cost.
