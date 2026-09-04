@@ -28,7 +28,7 @@ adjusted below for what is structurally different about Spain.
 | Live hyperscaler regions in-country | 3 |
 | Existing government / sovereign cloud | No single state cloud: Nube SARA / SGAD common services, sectoral ENS-Alta clouds (AEAT, GISS); regional sovereign clouds emerging (Madrid 2026); Telefonica/IBM, Indra, Oracle sovereign offers under ENS |
 | National digital identity (anchor workload) | Cl@ve / DNIe |
-| Internet exchange / cable landings | DE-CIX Madrid and ESpanix; landings Bilbao (MAREA |
+| Internet exchange / cable landings | DE-CIX Madrid and ESpanix; landings Bilbao (MAREA, Grace Hopper) and Barcelona (2Africa, Medusa) |
 
 Relative to the Dutch baseline: population x2.72, public administration x1.96,
 GDP x1.44. Resulting design load: x2.13 the Dutch figure.
@@ -88,7 +88,7 @@ fault or flood zone). They are to be replaced by the scored site selection in wo
 
 ## 7. Geography and threat notes
 
- Grace Hopper) and Barcelona (2Africa
+Drought/heat and water stress (cooling constraint); low seismic except Granada-Murcia/Alboran; Iberian grid island (Apr 2025 nationwide blackout); long connection queues (Madrid, Aragon) despite cheap renewable power; abundant land; very low geopolitical risk
 
 ## 8. Recommendations specific to Spain
 

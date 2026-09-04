@@ -27,8 +27,9 @@ from __future__ import annotations
 
 import csv
 import math
+import os
 import sys
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -39,6 +40,19 @@ COUNTRIES = cm.COUNTRIES
 PARAMS = ROOT / "model" / "eu27_parameters.csv"
 RULES = ROOT / "model" / "scaling_rules.csv"
 BASELINE = "NL"
+
+
+def gen_date() -> str:
+    """The date stamped into generated files.
+
+    Overridable via SOURCE_DATE_EPOCH (the reproducible-builds convention) so the
+    generator is byte-reproducible: re-running on a different day must not produce a
+    27-file diff, and tests can pin it to assert the generator is a true no-op.
+    """
+    epoch = os.environ.get("SOURCE_DATE_EPOCH")
+    if epoch:
+        return datetime.fromtimestamp(int(epoch), tz=timezone.utc).date().isoformat()
+    return date.today().isoformat()
 
 # ---------------------------------------------------------------------------
 # Proposed regions per country: (name, role, resilience, note).
@@ -367,7 +381,7 @@ def write_goal(c: dict, nl: dict, s: cm.Summary, wl_rows: list[dict], reg_rows: 
     hard = "hardened (frontline)" if frontline else "standard"
     body = f"""# {name} - Sovereign Government Data Center Network
 
-> Generated {date.today().isoformat()} by `model/generate_countries.py` from the Dutch reference case
+> Generated {gen_date()} by `model/generate_countries.py` from the Dutch reference case
 > (`countries/NL/GOAL.md`) and `model/eu27_parameters.csv`. Every number below is a **scaled working
 > assumption**, not a sourced figure. Edit the CSVs in this directory and re-run
 > `python3 model/capacity_model.py {iso}` to update the capacity numbers; edit
@@ -466,7 +480,7 @@ def write_summary(results: list[tuple[dict, cm.Summary]]) -> None:
     lines = [
         "# EU-27 sovereign data center capacity - summary",
         "",
-        f"Generated {date.today().isoformat()} by `model/generate_countries.py`. All figures are scaled working assumptions "
+        f"Generated {gen_date()} by `model/generate_countries.py`. All figures are scaled working assumptions "
         "derived from the Dutch reference case; see each country's `GOAL.md`.",
         "",
         "| ISO | Country | Pop (m) | Servers | Racks | IT MW | Design MW | Sites | CAPEX (EUR m) | OPEX (EUR m/yr) | Power price | Flags |",
@@ -537,6 +551,10 @@ def main() -> int:
         results.append((c, s))
         cm.print_summary(s)
 
+    # Sort by ISO so this file is identical whether written here or by
+    # `capacity_model.py --all`, which sorts alphabetically. Without this the two
+    # writers disagree on row order and any golden-file comparison is noise.
+    results.sort(key=lambda pair: pair[0]["iso2"])
     cm.write_csv(ROOT / "model" / "eu27_results.csv", [cm.result_row(s) for _, s in results])
     write_summary(results)
     return 0

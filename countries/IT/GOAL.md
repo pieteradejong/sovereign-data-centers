@@ -28,7 +28,7 @@ adjusted below for what is structurally different about Italy.
 | Live hyperscaler regions in-country | 4 |
 | Existing government / sovereign cloud | Polo Strategico Nazionale (PSN) - operational since 2023, TIM/Leonardo/CDP/Sogei consortium, 4 DC pairs; ACN cloud qualification regime (Strategia Cloud Italia) |
 | National digital identity (anchor workload) | SPID / CIE (IT-Wallet in rollout) |
-| Internet exchange / cable landings | MIX Milan; NAMEX Rome; landings Genoa |
+| Internet exchange / cable landings | MIX Milan; NAMEX Rome; landings Genoa, Sicily, Bari |
 
 Relative to the Dutch baseline: population x3.27, public administration x1.62,
 GDP x1.93. Resulting design load: x2.55 the Dutch figure.
@@ -89,7 +89,7 @@ fault or flood zone). They are to be replaced by the scored site selection in wo
 
 ## 7. Geography and threat notes
 
- Sicily
+High seismic/volcanic (Apennines, Naples, Etna); Po/Emilia floods (2023); gas-import dependent with structurally high power price; north-south grid bottlenecks (Lombardy hosts most capacity); low geopolitical frontline risk
 
 ## 8. Recommendations specific to Italy
 
