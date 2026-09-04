@@ -18,9 +18,10 @@ export default defineConfig({
     // d3 is the only heavy dependency; splitting it keeps the entry chunk small.
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          d3: ['d3', 'topojson-client'],
+        manualChunks(id: string) {
+          if (id.includes('node_modules/d3') || id.includes('topojson')) return 'd3'
+          if (id.includes('node_modules/react')) return 'react'
+          return undefined
         },
       },
     },

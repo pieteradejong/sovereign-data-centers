@@ -51,7 +51,7 @@ rewrites `GOAL.md`, `params.csv`, `workloads_inputs.csv` and `region_allocation_
 ## What the first pass shows
 
 - The EU-27 "sovereign core" tier is small: ~306 MW design load, ~125k servers, ~EUR 7.2 bn CAPEX,
-  ~EUR 0.7 bn/yr OPEX across 86 sites. Germany alone is ~60 MW; nine states are under 3 MW.
+  ~EUR 0.7 bn/yr OPEX across 86 sites. Germany alone is ~60 MW; eight states are under 3 MW.
 - For states under ~3 MW, three in-country sites means sub-1 MW rooms, which is a closet, not a data center.
   The Dutch 3-region rule does not survive contact with Estonia, Slovenia or Luxembourg; those cases push
   toward fewer, hardened in-country sites plus an out-of-country reserve, i.e. the EU federation layer that

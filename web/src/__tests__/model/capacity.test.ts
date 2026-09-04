@@ -117,7 +117,10 @@ describe('capacity.ts reproduces the Python model', () => {
 
 describe('documented invariants', () => {
   it('reproduces the Dutch spreadsheet', () => {
-    const got = computeCapacity(workloadsFor('NL'), assumptionsFrom(assumptionRows, overridesFor('NL')))
+    const got = computeCapacity(
+      workloadsFor('NL'),
+      assumptionsFrom(assumptionRows, overridesFor('NL')),
+    )
     expect(got.totalServers).toBe(5691)
     expect(got.designMw).toBeCloseTo(14.2, 1)
     expect(got.capexTotal).toBeCloseTo(339, 0)
@@ -147,6 +150,11 @@ describe('documented invariants', () => {
     // Germany is the only country whose MW demand exceeds its floor outright.
     const de = rows.find(r => r.iso === 'DE')
     expect(de?.sitesByMw).toBe(6)
-    expect(rows.filter(r => r.sitesByMw > Math.trunc(assumptionsFrom(assumptionRows, overridesFor(r.iso)).minSites))).toHaveLength(1)
+    expect(
+      rows.filter(
+        r =>
+          r.sitesByMw > Math.trunc(assumptionsFrom(assumptionRows, overridesFor(r.iso)).minSites),
+      ),
+    ).toHaveLength(1)
   })
 })

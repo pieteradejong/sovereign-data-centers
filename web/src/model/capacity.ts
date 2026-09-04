@@ -77,9 +77,7 @@ export function computeCapacity(workloads: WorkloadInput[], a: Assumptions): Cap
   for (const w of workloads) {
     const cpu = Math.ceil((w.cores * w.availability) / (a.coresPerServer * a.cpuUtil))
     const gpu = Math.ceil((w.gpus * w.availability) / (a.gpuPerServer * a.gpuUtil))
-    const storage = Math.ceil(
-      (w.storagePb * a.replication * w.availability) / a.pbPerStorageServer,
-    )
+    const storage = Math.ceil((w.storagePb * a.replication * w.availability) / a.pbPerStorageServer)
     cpuServers += cpu
     gpuServers += gpu
     storageServers += storage

@@ -22,8 +22,7 @@ class IntersectionObserverStub {
   rootMargin = ''
   thresholds = []
 }
-globalThis.IntersectionObserver =
-  IntersectionObserverStub as unknown as typeof IntersectionObserver
+globalThis.IntersectionObserver = IntersectionObserverStub as unknown as typeof IntersectionObserver
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -38,13 +37,9 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 // SVG layout APIs d3 touches that jsdom does not implement.
-if (!SVGElement.prototype.getBBox) {
-  SVGElement.prototype.getBBox = () => ({
-    x: 0,
-    y: 0,
-    width: 100,
-    height: 20,
-  }) as DOMRect
+const svgProto = SVGElement.prototype as unknown as { getBBox?: () => DOMRect }
+if (!svgProto.getBBox) {
+  svgProto.getBBox = () => ({ x: 0, y: 0, width: 100, height: 20 }) as DOMRect
 }
 
 afterEach(() => cleanup())

@@ -26,7 +26,10 @@
   --color-bg-emphasis: #f7e9e3;
   --color-fg-primary: var(--color-slate);
   --color-fg-secondary: #6b6a63;
-  --color-fg-muted: #898781;
+  /* The design system lists #898781 here, which measures 3.21:1 on this page —
+     fine for axis ticks (graphical, 3:1) but failing AA as body text. Darkened to
+     4.63:1 so the same token is safe everywhere it is used. */
+  --color-fg-muted: #6f6d66;
   --color-border: var(--color-rule);
   --color-accent: var(--color-clay);
   --color-accent-text: var(--color-clay-dark);

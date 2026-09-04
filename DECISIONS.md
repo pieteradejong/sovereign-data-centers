@@ -157,6 +157,14 @@ This is not a slogan; it has caught four real defects that would otherwise have 
    `hyperscaler_regions_live=2` was right and the prose was wrong.
 4. **73.5% mean prose similarity** across the 26 generated briefs (47 of 325 pairs above 80%, LT–LV at
    90.2%), which is why the book is structured as argument-plus-gazetteer rather than a read-through.
+5. **Two miscounted headline figures**, both caught by asserting them in tests rather than repeating them.
+   The `min_sites` floor binds for 24 countries, not 26 (see #12). And eight states fall below 1 MW per
+   site, not nine — the "nine" came from `README.md`, which was itself wrong about a different metric
+   (states under 3 MW total design load, also eight). The same eight countries happen to satisfy both:
+   SI, EE, LV, CY, MT, LU, LT, HR.
+
+The pattern in every one of these: a number quoted from an earlier summary rather than recomputed. The
+app now derives these counts from the data at render time, so the page cannot drift from the model.
 
 ### 15. The generator is byte-reproducible
 **2026-09-03.** Generated files stamp their date from `SOURCE_DATE_EPOCH` when set, following the
