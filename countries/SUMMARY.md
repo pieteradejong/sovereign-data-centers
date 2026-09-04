@@ -1,6 +1,6 @@
 # EU-27 sovereign data center capacity - summary
 
-Generated 2026-09-01 by `model/generate_countries.py`. All figures are scaled working assumptions derived from the Dutch reference case; see each country's `GOAL.md`.
+Generated 2026-09-03 by `model/generate_countries.py`. All figures are scaled working assumptions derived from the Dutch reference case; see each country's `GOAL.md`.
 
 | ISO | Country | Pop (m) | Servers | Racks | IT MW | Design MW | Sites | CAPEX (EUR m) | OPEX (EUR m/yr) | Power price | Flags |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|

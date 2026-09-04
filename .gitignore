@@ -20,3 +20,11 @@ __pycache__/
 
 # Node (in case tooling is added later)
 node_modules/
+
+# Web app build output
+web/node_modules/
+web/dist/
+.vercel/
+
+# Outreach contact lists: institutional map is public, named individuals are not
+paper_book/contacts/

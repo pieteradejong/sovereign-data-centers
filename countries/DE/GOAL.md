@@ -1,6 +1,6 @@
 # Germany - Sovereign Government Data Center Network
 
-> Generated 2026-09-01 by `model/generate_countries.py` from the Dutch reference case
+> Generated 2026-09-03 by `model/generate_countries.py` from the Dutch reference case
 > (`countries/NL/GOAL.md`) and `model/eu27_parameters.csv`. Every number below is a **scaled working
 > assumption**, not a sourced figure. Edit the CSVs in this directory and re-run
 > `python3 model/capacity_model.py DE` to update the capacity numbers; edit

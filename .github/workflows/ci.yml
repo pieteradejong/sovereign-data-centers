@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  model:
+    name: Model and data integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # No dependencies to install: the model is stdlib-only by design.
+      - name: Run tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Generated files are up to date with the model
+        run: |
+          # Pin the date so the only diffs that can appear are real ones.
+          export SOURCE_DATE_EPOCH=1788393600
+          python3 model/generate_countries.py > /dev/null
+          python3 model/export_json.py > /dev/null
+          if ! git diff --quiet; then
+            echo "::error::Generated files are stale. Run the generator and commit the result."
+            git diff --stat
+            exit 1
+          fi
