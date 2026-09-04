@@ -185,6 +185,10 @@ def build(c: dict, nl: dict, s, wl_rows: list[dict], nl_s) -> dict:
         "name": c["country"],
         "params": dict(c),
         "flags": f,
+        # Raw, unrounded Summary. The markdown renderer formats straight from these so
+        # its output is unchanged by this layer; export_json.py drops "_"-prefixed keys
+        # because a dataclass is not JSON and the app reads the rounded values below.
+        "_summary": s,
         "scale": {
             "population_m": pop,
             "gdp_eur_bn": gdp,

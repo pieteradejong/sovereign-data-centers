@@ -34,6 +34,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import capacity_model as cm  # noqa: E402
+import country_data  # noqa: E402
 
 ROOT = cm.ROOT
 COUNTRIES = cm.COUNTRIES
@@ -297,74 +298,23 @@ def fmt_money(x: float) -> str:
     return f"EUR {x:,.0f} m"
 
 
-def write_goal(c: dict, nl: dict, s: cm.Summary, wl_rows: list[dict], reg_rows: list[dict], nl_s: cm.Summary) -> str:
-    iso, name = c["iso2"], c["country"]
-    pop, gdp, gov = float(c["population_m"]), float(c["gdp_eur_bn"]), float(c["gov_employment_k"])
-    price, res = float(c["elec_price_eur_mwh"]), float(c["renewables_pct"])
-    frontline, isolated = int(c["frontline"]) == 1, int(c["grid_isolated"]) == 1
-    seismic, min_sites = c["seismic"], int(c["min_sites"])
-    hs = int(c["hyperscaler_regions_live"])
-    micro = min_sites <= 2
+def write_goal(d: dict) -> str:
+    """Render the country brief from the assembled fact dict.
 
-    # --- Flag-driven guidance -------------------------------------------------
-    differs = []
-    if frontline:
-        differs.append(
-            "**Frontline exposure.** A land border with Russia or Belarus (or a Black Sea coast facing the war) changes the "
-            "threat model from *geopolitical supply disruption* to *kinetic and sabotage risk against the facilities themselves*. "
-            "Defense and security workloads are scaled up 1.5x/1.25x in the baseline, and at least one site should be hardened "
-            "(EMP/blast, autonomous power for weeks, not hours). A purely national footprint cannot provide the out-of-country "
-            "cold copy that Estonia's Data Embassy already demonstrates; this is the first item to revisit when the EU federation "
-            "layer (Dutch GOAL.md section 16) is modelled."
-        )
-    if isolated:
-        differs.append(
-            "**Grid isolation.** The national grid is an electrical island or nearly so (weak or single interconnection). "
-            "The April 2025 Iberian blackout and Cyprus/Malta interconnector outages show the failure mode. Every site needs "
-            "on-site generation and storage sized for multi-day ride-through, and the PUE and facility CAPEX assumptions "
-            "should be revisited upward once site studies exist."
-        )
-    if seismic == "high":
-        differs.append(
-            "**High seismic risk.** Base isolation or seismic-rated structures are mandatory, not optional, at the primary "
-            "site; the second and third regions should be chosen in a different seismic domain so a single event cannot "
-            "take out two regions. Expect facility CAPEX above the EUR 10 m/MW planning figure."
-        )
-    elif seismic == "moderate":
-        differs.append("**Moderate seismic risk.** Seismic zoning should be a site-scoring criterion; at least two regions in different domains.")
-    if price > 190:
-        differs.append(
-            f"**Expensive power ({price:.0f} EUR/MWh vs. EU average ~184).** Power is the dominant OPEX line; free cooling, "
-            "heat reuse, and siting near renewables or nuclear baseload move the economics more than server choice does. "
-            "The model's power OPEX line is the number to attack first."
-        )
-    elif price < 110:
-        differs.append(
-            f"**Cheap, clean power ({price:.0f} EUR/MWh, {res:.0f}% renewables).** The economics favour building larger sites than "
-            "the 12 MW planning unit and offering spare sovereign capacity to partners - a reason to revisit the site-size assumption."
-        )
-    if micro:
-        differs.append(
-            "**Micro-state geography.** The Dutch rule of 3-5 regions with 50-100 km separation cannot be met inside the "
-            "national territory. The model therefore assumes two in-country sites carrying 55/45 of the load and no in-country "
-            "reserve. A credible disaster-recovery posture requires an out-of-country partner site - deferred to the federation layer."
-        )
-    if hs == 0:
-        differs.append(
-            "**No hyperscaler region in-country.** Unlike the Netherlands, there is no commercial hyperscale tier to fall back on "
-            "for non-critical workloads without leaving the jurisdiction. The sovereign core therefore has to be sized for a larger "
-            "share of total government demand, and the hybrid model (Dutch GOAL.md section 7) needs a cross-border commercial tier."
-        )
-    elif hs >= 3:
-        differs.append(
-            f"**Dense hyperscaler presence ({hs} live regions).** Commercial capacity, fibre and skills exist in-country; the "
-            "sovereign core can stay lean and the hybrid model works as designed. The risk is the opposite one: political "
-            "pressure to declare a hyperscaler region 'sovereign enough' (Dutch GOAL.md section 17: location is not sovereignty)."
-        )
-    if not differs:
-        differs.append("No structural flags differ from the Dutch reference case; the Dutch design rules transfer directly.")
+    Pure dict -> markdown: every fact and every derived judgement comes from
+    country_data.build(), so this function and the web app cannot disagree.
+    """
+    c, s = d["params"], d["_summary"]
+    iso, name = d["iso2"], d["name"]
+    sc, fl = d["scale"], d["flags"]
+    pop, gdp, gov = sc["population_m"], sc["gdp_eur_bn"], sc["gov_employment_k"]
+    price, res = sc["elec_price_eur_mwh"], sc["renewables_pct"]
+    frontline, isolated = fl["frontline"], fl["grid_isolated"]
+    min_sites, micro, hs = fl["min_sites"], fl["micro"], fl["hyperscaler_regions_live"]
+    wl_rows = d["workloads"]
+    differs = d["structural_differences"]
 
-    ratio = s.design_mw / nl_s.design_mw
+    ratio = sc["design_ratio"]
 
     def wl_table():
         lines = ["| Workload | Class | CPU cores | GPU eq. | Storage (PB) | Avail. factor |", "|---|---|---:|---:|---:|---:|"]
@@ -411,8 +361,8 @@ adjusted below for what is structurally different about {name}.
 | National digital identity (anchor workload) | {c['digital_id']} |
 | Internet exchange / cable landings | {c['ixp']} |
 
-Relative to the Dutch baseline: population x{pop/float(nl['population_m']):.2f}, public administration x{gov/float(nl['gov_employment_k']):.2f},
-GDP x{gdp/float(nl['gdp_eur_bn']):.2f}. Resulting design load: x{ratio:.2f} the Dutch figure.
+Relative to the Dutch baseline: population x{sc['pop_ratio']:.2f}, public administration x{sc['gov_ratio']:.2f},
+GDP x{sc['gdp_ratio']:.2f}. Resulting design load: x{ratio:.2f} the Dutch figure.
 
 ## 3. What is structurally different from the Dutch case
 
@@ -547,7 +497,8 @@ def main() -> int:
         cm.write_csv(cdir / "workloads_inputs.csv", wl)
         cm.write_csv(cdir / "region_allocation_inputs.csv", rg)
         s = cm.run_country(iso)
-        (cdir / "GOAL.md").write_text(write_goal(c, nl, s, wl, rg, nl_summary), encoding="utf-8")
+        d = country_data.build(c, nl, s, wl, nl_summary)
+        (cdir / "GOAL.md").write_text(write_goal(d), encoding="utf-8")
         results.append((c, s))
         cm.print_summary(s)
 
