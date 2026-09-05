@@ -481,3 +481,86 @@ reshuffle, and three of the twenty-seven moved within the last two years.
 Send order is operator, then scrutiny, then trade press, then ministry — not the reverse. The operator holds
 the workload inventory the model is guessing at and is the only party who can falsify it, and a ministerial
 send that arrives before the operator has seen it tends to be routed back to that operator as a threat.
+
+---
+
+## Artefacts, outreach and deployment
+
+### 38. Per-country infographics are generated from the model, never illustrated
+**2026-09-05.** Each country gets a one-page PNG infographic and a PDF briefing, rendered
+by headless Chrome from a `/poster/:iso` route in the app.
+
+Every figure comes from `country_data.build()` via the JSON bundle, so a poster cannot
+disagree with its brief. This is the deliberate opposite of the existing Dutch artwork
+(decision 39), whose grid routing, cable landings and growth curves were drawn by an image
+model and derive from nothing in this repository — and which still shows PUE 1.70 against
+the model's 1.25.
+
+Two rules the layout follows, both from the security audit:
+
+- **No state emblems, flags, crowns or official-looking wordmarks.** These are concept
+  posters for a programme that exists in no member state, and they say so.
+- **The caveat is printed on the poster.** An image gets shared without the page that
+  explains it, so the disclaimer has to travel with the pixels.
+
+Poster height is measured per country from the rendered DOM rather than fixed: region
+counts vary from two to five, so a fixed height would clip Romania or leave Malta
+two-thirds blank.
+
+### 39. AI-generated assets must be labelled at every reference
+**2026-09-05.** Arising from the security audit.
+
+`countries/NL/Rijkscloud-...png` carries C2PA Content Credentials naming OpenAI `gpt-image`
+v2.0 and the IPTC code `trainedAlgorithmicMedia`, plus an invisible watermark. None of this
+was documented anywhere, which is the worst case: the provenance is embedded, so a
+C2PA-aware viewer reveals it before the repository does.
+
+Any AI-generated asset must be labelled wherever it is referenced, with its tool, date and
+what in it is model-derived versus illustrative. Future artwork avoids state iconography
+entirely.
+
+Remediation is tracked in `ROADMAP.md` and not yet complete.
+
+### 40. Outreach lists: institutions in public, individuals never
+**2026-09-05.** Extends decision 26 after a request to put named politicians and
+journalists in the README.
+
+The public README carries the institutional map — ITRE, LIBE, IMCO, DG CONNECT, DG DIGIT,
+the Telecom Working Party, ENISA, and each state's procurement body and cloud operator,
+which are already columns in the dataset. Named individuals live in
+`paper_book/contacts/`, gitignored, in official capacity only and with no personal contact
+details.
+
+Roles outlast people: "Chair, ITRE" survives an election and a name does not, so the
+institutional map is also the more durable artefact.
+
+**A near miss worth recording.** `.gitignore` contained `book/contacts/` rather than
+`paper_book/contacts/` — the prefix was lost when the line was written, so the directory
+intended to hold named individuals was never actually ignored. The security audit reported
+it clean only because the directory did not yet exist. Found and fixed 2026-09-05 before
+any file was created; the rule is now widened to `**/contacts/` and `*-contacts.md` so a
+differently-named file cannot slip through. Verified with `git check-ignore`.
+
+### 41. Deployment is staged, and the domain is deliberately unofficial-sounding
+**2026-09-05.** Vercel, static build from `web/dist`, Git-integrated: `main` ships
+production, every PR gets a preview URL.
+
+Three stages, gated on verification rather than on readiness of the code:
+
+| Stage | Where | Gate |
+|---|---|---|
+| Now | `*.vercel.app`, `noindex` via `robots.txt` | none — it is a working draft |
+| Next | `*.vercel.app`, indexable | Tier-1 legal cells verified against primary sources |
+| Then | `eu27.cloud` | sampling audit error rate measured |
+
+**The domain choice follows from decision 25.** Unverified claims about what 27
+jurisdictions require must not sit under a name that reads as a register.
+`eusovereigncloud.eu`, `sovereigncloud.eu` and anything on `.eu` imply an EU institution;
+`.org` implies an established NGO. `eu27.cloud` is short and topical, and `.cloud`
+unmistakably signals a project. It pairs with a masthead line stating the work is
+independent and unaffiliated.
+
+`vercel.json` sets a strict CSP (`default-src 'self'`, no inline scripts, `frame-ancestors
+'none'`), `nosniff`, `DENY` framing and a restrictive `Permissions-Policy`. The app makes
+one network call — fetching its own data bundle — so nothing looser is needed. No
+analytics.

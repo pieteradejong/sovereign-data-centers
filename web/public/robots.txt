@@ -1,0 +1,8 @@
+# Indexing is disabled until the legal and regulatory entries are verified against
+# primary sources. Publishing unverified claims about what 27 jurisdictions require,
+# under a name that looks authoritative, is this project's one real reputational risk.
+# See DECISIONS.md #25 and ROADMAP.md.
+#
+# Remove these two lines once the verification gate has passed.
+User-agent: *
+Disallow: /

@@ -26,5 +26,9 @@ web/node_modules/
 web/dist/
 .vercel/
 
-# Outreach contact lists: institutional map is public, named individuals are not
-book/contacts/
+# Outreach contact lists. The institutional map is public (see README); files
+# naming individuals are not: a public official's work contact is still personal
+# data, and a public repo is a scrape target. See DECISIONS.md #26.
+paper_book/contacts/
+**/contacts/
+*-contacts.md

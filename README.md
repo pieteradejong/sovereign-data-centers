@@ -90,6 +90,51 @@ rewrites `GOAL.md`, `params.csv`, `workloads_inputs.csv` and `region_allocation_
 - Seven states have frontline exposure (EE, LV, LT, PL, FI, RO, BG); five have no live hyperscaler region and
   therefore no in-jurisdiction commercial tier for the hybrid model.
 
+## Who this is for
+
+The audience is European policymakers and civil servants. The bodies below are the
+institutional owners of the decisions this model touches — cloud policy, certification,
+classification and procurement for government workloads.
+
+**This repository lists institutions and roles only, never named individuals.** A public
+official's work contact is still personal data, and a public repository is a scrape target
+(see `DECISIONS.md` #26).
+
+### EU level
+
+| Body | Why it is relevant |
+|---|---|
+| European Parliament — ITRE | Industry, Research and Energy: the cloud, data and infrastructure file |
+| European Parliament — LIBE | Civil Liberties: data protection and the jurisdiction question |
+| European Parliament — IMCO | Internal Market: the Data Act and procurement rules |
+| European Commission — DG CONNECT | Cloud policy, the EU Cloud Services Scheme, Digital Decade targets |
+| European Commission — DG DIGIT | The Commission's own cloud and interoperability posture |
+| Council — Telecom Working Party | Where member-state positions on cloud sovereignty are reconciled |
+| ENISA | Certification schemes, including the unresolved sovereignty requirements in EUCS |
+| European Court of Auditors | Has previously audited Commission cloud procurement |
+
+### National level
+
+Each country's own institutions are already in the dataset rather than duplicated here.
+`model/eu27_parameters.csv` carries, per member state:
+
+- `procurement_vehicle` — the central purchasing body a sovereign core would be bought through
+  (BBG, UGAP, Consip, Hansel, SKI, CPO LT, ESPAP, Kammarkollegiet, and so on)
+- `sovereign_cloud_initiative` — the operator of the existing government cloud
+  (BRZ, ITZBund, DINUM, PSN, GRNET, MITA, RIT, APIS IT, NISZ, VRAA, CTIE, ADR, MIRRI, …)
+- `digital_id` — the national identity scheme and its operator
+- `certification_scheme` — the national cloud assurance regime and its authority
+  (ANSSI for SecNumCloud, BSI for C5, CCN for ENS, ACN in Italy, NÚKIB in Czechia, Traficom in Finland)
+
+Read them per country in that country's `GOAL.md` §10 and §11, or across all 27 in
+`countries/SUMMARY.md`.
+
+### A note on timing
+
+The legal and regulatory entries are not yet verified against primary sources. The first
+thing any of these bodies would check is the entry about their own country, so outreach
+before that verification is done invites an easy dismissal. See `ROADMAP.md`.
+
 ## Caveats
 
 Same as the Dutch case, only more so: every input is a working assumption or a scaled placeholder, the

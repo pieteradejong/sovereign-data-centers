@@ -57,19 +57,23 @@ React 19, Vite 8, TypeScript 6, Tailwind 4, D3 7. Seven working routes:
 - CI on GitHub, including a check that committed generated files match the model
 - Chart palette validated for colour-vision deficiency on both light and dark surfaces
 
+### Per-country artefacts
+- A one-page infographic (`<ISO>-infographic.png`) and a PDF briefing (`<ISO>-briefing.pdf`) in every
+  country directory, produced by `model/export_artifacts.py` via `run.sh export`
+- Data-driven, not AI-generated; no state emblems or official-looking wordmarks; the provenance caveat is
+  printed on the poster itself, because images get shared without the page that explains them
+
+### Deployment configuration
+`vercel.json` (strict CSP, `nosniff`, `DENY` framing, restrictive `Permissions-Policy`) and a `robots.txt`
+that blocks indexing until the verification gate passes.
+
 ### Documentation
-`DECISIONS.md` (37 entries), `CHANGELOG.md`, `README.md`, and a data-correction issue template.
+`DECISIONS.md` (41 entries), `ROADMAP.md`, `CHANGELOG.md`, `README.md` with the institutional outreach map,
+and a data-correction issue template.
 
 ---
 
 ## In progress
-
-### Per-country infographics
-A one-page visual summary for each of the 27 states, generated from the model and exported to PNG.
-
-Deliberately **data-driven, not AI-generated**, and carrying **no state emblems or official-looking
-wordmarks** — both lessons from the security audit below. Every figure traces to `country_data.build()`,
-so the posters cannot drift from the briefs the way the existing Dutch artwork did.
 
 ### Security-audit remediation
 A full security and privacy audit was completed 2026-09-04. The repository came back largely clean: no
@@ -91,11 +95,6 @@ Four findings remain open:
 
 ## Planned
 
-### Next — export pipeline
-`model/export_artifacts.py`: build the app, serve it, drive headless Chrome over `/poster/:iso` and
-`/country/:iso` to produce a PNG poster and a PDF report in each country directory. `run.sh export` already
-dispatches to this; **the script does not exist yet, so that command currently fails.**
-
 ### Next — provenance and verification (gates everything public-facing)
 This is the most valuable remaining work, and the only thing standing between the project and a custom
 domain or a printed book.
@@ -107,9 +106,10 @@ domain or a printed book.
 - Eurostat figures re-pulled from the public API and diffed against the CSV
 
 ### Then — deployment
-Vercel, static build from `web/dist`, PR previews so country pages can be read before they ship. Staying on
-`*.vercel.app` until the verification gate passes: publishing unverified legal claims under an
-authoritative-sounding domain is this project's one real reputational risk.
+`vercel.json` and `robots.txt` are in place: static build from `web/dist`, strict CSP, PR previews, and
+`noindex` until verification passes. Staged as `*.vercel.app` (noindex) → `*.vercel.app` (indexed, after
+Tier-1 verification) → **`eu27.cloud`** (after the sampling audit). The domain is deliberately
+unofficial-sounding; see `DECISIONS.md` #41.
 
 ### Then — the choropleth
 `/map` is in the navigation but unbuilt. Needs `d3-geo` with a conic projection — Cyprus and Malta are
@@ -125,9 +125,10 @@ to be written; the 27 briefings become an explicitly labelled reference section.
 
 `run.sh book` dispatches to `paper_book/build.py`, which **does not exist yet.**
 
-### Later — outreach contact list
-Institutional roles and published official contact points, largely derivable from data already held.
-Named individuals never enter the public repo — they live in `paper_book/contacts/`, gitignored.
+### Later — outreach
+The institutional map is in the README. Named individuals stay in `paper_book/contacts/`, gitignored, in
+official capacity only. Outreach itself waits on verification: the first thing any of these bodies would
+check is the entry about their own country.
 
 ---
 
