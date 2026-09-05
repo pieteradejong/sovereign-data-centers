@@ -21,8 +21,10 @@ jobs:
 
       - name: Generated files are up to date with the model
         run: |
-          # Pin the date so the only diffs that can appear are real ones.
-          export SOURCE_DATE_EPOCH=1788393600
+          # Read the pinned date from .build-epoch, the single source the three shell
+          # scripts also use. Hardcoding it here once already broke CI when the epoch
+          # was bumped and this copy was missed.
+          export SOURCE_DATE_EPOCH="$(cat .build-epoch)"
           python3 model/generate_countries.py > /dev/null
           python3 model/export_json.py > /dev/null
           if ! git diff --quiet; then

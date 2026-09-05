@@ -27,7 +27,9 @@ import capacity_model as cm  # noqa: E402
 import country_data  # noqa: E402
 import generate_countries as gc  # noqa: E402
 
-PINNED_EPOCH = "1788393600"  # 2026-09-03, so generated output is reproducible
+# The pinned generation date, read from the one file that owns it. Hardcoding this
+# has now broken twice: once in init.sh, once in the CI workflow.
+PINNED_EPOCH = (ROOT / ".build-epoch").read_text().strip()
 
 
 def params() -> dict[str, dict]:
