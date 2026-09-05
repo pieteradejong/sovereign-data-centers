@@ -52,7 +52,7 @@ show_help() {
     echo
     echo -e "${GREEN}Data and artefacts${NC}"
     echo "  data             Regenerate country CSVs, briefs and the JSON bundle"
-    echo "  export           Per-country PDF reports and posters"
+    echo "  export           Standalone per-country PDF briefs (book/build/briefs/)"
     echo "  book             Typeset the paper book"
     echo
     echo -e "${GREEN}Housekeeping${NC}"
@@ -77,8 +77,16 @@ case "${1:-dev}" in
     build)
         check_deps
         regen_data
-        cd web && npm run build
-        print_success "Built to web/dist/"
+        (cd web && npm run build)
+        # Briefs go into dist/, never into web/public/ — public/ is committed and these
+        # are regenerable binaries. Skipped rather than fatal when typst is absent.
+        if command -v typst &> /dev/null; then
+            python3 book/build.py --briefs -o web/dist/briefs > /dev/null
+            print_success "Built to web/dist/ (with 27 briefs at /briefs/<ISO>.pdf)"
+        else
+            print_warning "typst missing — built without the per-country PDFs"
+            print_success "Built to web/dist/"
+        fi
         ;;
     preview)
         check_deps
@@ -101,15 +109,15 @@ case "${1:-dev}" in
         ;;
     export)
         check_deps
-        python3 model/export_artifacts.py "${@:2}"
+        python3 book/build.py --briefs "${@:2}"
         ;;
     book)
         if ! command -v typst &> /dev/null; then
             print_error "typst is not installed. Install with: brew install typst"
             exit 1
         fi
-        print_info "Typesetting the paper book..."
-        python3 paper_book/build.py "${@:2}"
+        print_info "Typesetting the book..."
+        python3 book/build.py "${@:2}"
         ;;
     clean)
         print_info "Cleaning build artefacts..."

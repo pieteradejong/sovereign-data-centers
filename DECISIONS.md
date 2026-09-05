@@ -267,7 +267,7 @@ book cannot be corrected after the fact.
 
 ### 26. Named individuals never go in the public repo
 **2026-09-04.** The outreach contact list holds institutional roles and published official contact points —
-committee, directorate, agency. Named individuals with contact details live in `paper_book/contacts/`,
+committee, directorate, agency. Named individuals with contact details live in `book/contacts/`,
 which is gitignored.
 
 A list of named officials in a public GitHub repo is a scrape target, ages badly, and a public official's
@@ -392,3 +392,92 @@ at it" step is load-bearing.
 Another project in this workspace was already serving 4173. The preview server failed to bind, Playwright
 happily reused the existing one, and the tests ran green against a completely different application before
 this was noticed. `strictPort` turns that silent pass into a hard failure.
+
+---
+
+## Print and distribution
+
+### 38. The book directory is `book/`, not `paper_book/`
+**2026-09-04.** Renamed; `run.sh`, `.gitignore` and #26 above updated to match.
+
+`run.sh` called `paper_book/build.py` and `.gitignore` excluded `paper_book/contacts/`, but neither the
+directory nor the script had ever been written — so `./run.sh book` and `./run.sh export` both failed with
+a Python "no such file" error while `CHANGELOG.md` listed them as delivered commands. Given the folder had
+to be created anyway, it takes the shorter name, and there is exactly one name for it rather than two.
+
+### 39. One typst renderer for the book and the per-country briefs
+**2026-09-04.** `book/build.py --briefs` emits 27 standalone A4 PDFs from the same `country_entry()` that
+renders the book's gazetteer chapter. `run.sh export` points at it. The Chrome-headless export path implied
+by `init.sh`'s browser check is abandoned.
+
+The alternative was printing the React app's `/country/:iso` route to PDF with headless Chrome. That gives
+web CSS in a print context: no facing-page margins, no widow and orphan control, and page breaks that fall
+where the viewport says rather than where the document should break. Acceptable for a screenshot, weak for
+a document handed to a ministry.
+
+The deeper objection is #6. Two renderers means two places the same country's figures can diverge, which is
+the failure mode the single-dict rule exists to prevent. A brief is the gazetteer entry plus a title block —
+about forty lines of shared code, not a second pipeline. `country_entry(c, standalone=True)` promotes the
+section headings by one level and drops the chapter title; everything else is identical by construction.
+
+Chrome is still required for the Playwright E2E suite (#22), so `init.sh` keeps the check — but its stated
+justification was corrected, since it claimed Chrome was needed for an export that no longer uses it.
+
+*Would change if:* a brief needs a chart the model cannot emit as typst or SVG.
+
+### 40. A5 book, A4 briefs
+**2026-09-04.** Two page geometries in `templates/style.typ`, sharing colours, type scale and table helpers.
+
+A book that is read through and a brief that is handed across a desk are different objects. The A5 interior
+takes recto part openers and a page break per country; the A4 brief takes a title block and no forced breaks
+at all, because it is meant to be read straight through in two pages. The two wrappers are deliberately not
+factored into one parameterised function — the page geometry and the heading behaviour genuinely differ, and
+the shared part is small enough that duplicating fifteen lines is clearer than the abstraction that would
+avoid it.
+
+### 41. No generated PDF is ever committed
+**2026-09-04.** `book/build/` and `web/dist/` are gitignored. The briefs and the book are built on demand.
+
+Twenty-eight PDFs at roughly 40 KB each for the briefs and 700 KB for the book is about 1.8 MB per build —
+and CI already regenerates model outputs on every push, so any change to `model/` would rewrite all
+twenty-eight binaries. Git history never shrinks, and `~/dev/CLAUDE.md` is explicit that regenerable build
+artifacts stay out of it. The build is deterministic given `.build-epoch` (#34), which is what makes not
+committing them safe: the PDF is always reproducible from source at any commit.
+
+This is also why the briefs are written to `web/dist/briefs/` and never to `web/public/`. `public/` is
+tracked — `eu27.json` lives there and CI asserts it is fresh — so a PDF placed there would be committed by
+the same rule that keeps the bundle honest.
+
+### 42. The PDFs ship from the existing web app, not a separate one
+**2026-09-04.** `./run.sh build` writes the briefs into `web/dist/briefs/<ISO>.pdf`, served from the same
+origin as the app at `/briefs/<ISO>.pdf`.
+
+A separate PDF site would need its own deployment, its own domain, and its own copy of the provenance
+banner that #25 requires everywhere — three new things to keep in sync, for content derived from the data
+the main app already serves. It would also put the PDF a navigation hop away from `/country/:iso`, which is
+the page where a reader actually wants it.
+
+The reason to split would be a different audience or different access control. There is one audience here,
+and it is the same one for both.
+
+*Open:* Vercel's build image has no typst, so a deploy built there produces the app without the briefs.
+Either the build installs typst, or CI builds the briefs and attaches them to a GitHub Release with the app
+linking out. Unresolved; the local build is correct either way.
+
+### 43. The outreach map is institutional; individuals are gitignored
+**2026-09-04.** `OUTREACH.md` carries offices, agencies, committees and press desks for all 27 states plus
+the EU layer. Named individuals go in `book/contacts/`, which is gitignored under #26.
+
+Two-thirds of the map was already in `model/eu27_parameters.csv` — `sovereign_cloud_initiative`,
+`certification_scheme` and `procurement_vehicle` name the operator, the certifying authority and the buying
+channel for every member state, researched against primary sources when those columns were built. Rebuilding
+that from memory would have produced a second, less reliable copy of a dataset the repo already has.
+
+The file therefore carries an explicit provenance table separating what it inherits from the CSV from what
+was added from general knowledge. Ministry names, parliamentary committees and press desks are in the second
+category and are marked check-before-send: digital portfolios are merged, split and renamed at nearly every
+reshuffle, and three of the twenty-seven moved within the last two years.
+
+Send order is operator, then scrutiny, then trade press, then ministry — not the reverse. The operator holds
+the workload inventory the model is guessing at and is the only party who can falsify it, and a ministerial
+send that arrives before the operator has seen it tends to be routed back to that operator as a threat.

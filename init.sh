@@ -66,8 +66,9 @@ fi
 print_success "npm $(npm -v)"
 
 # --- Optional tools ----------------------------------------------------------
-# Chrome is needed for PDF/poster export and for the end-to-end tests. Note the
-# local install is at Chrome.app, not the conventional "Google Chrome.app".
+# Chrome is needed for the end-to-end tests only. PDF export moved to typst when the
+# book pipeline landed, so a missing browser no longer blocks './run.sh export'. Note
+# the local install is at Chrome.app, not the conventional "Google Chrome.app".
 CHROME_CANDIDATES=(
     "/Applications/Chrome.app/Contents/MacOS/Google Chrome"
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
@@ -79,16 +80,16 @@ for candidate in "${CHROME_CANDIDATES[@]}"; do
     if [ -x "$candidate" ]; then CHROME="$candidate"; break; fi
 done
 if [ -n "$CHROME" ]; then
-    print_success "Browser for export/E2E: $(basename "$(dirname "$(dirname "$(dirname "$CHROME")")")" .app)"
+    print_success "Browser for E2E: $(basename "$(dirname "$(dirname "$(dirname "$CHROME")")")" .app)"
 else
-    print_warning "No Chromium-family browser found — './run.sh export' and E2E tests will not run"
+    print_warning "No Chromium-family browser found — E2E tests will not run"
 fi
 
-# Typst is only needed for the paper book, so a missing install is a warning.
+# Typst renders the book and the per-country briefs; a missing install is a warning.
 if command -v typst &> /dev/null; then
     print_success "typst $(typst --version | awk '{print $2}')"
 else
-    print_warning "typst not installed — './run.sh book' will not run"
+    print_warning "typst not installed — './run.sh book' and './run.sh export' will not run"
     echo -e "         Install with: ${GREEN}brew install typst${NC}"
 fi
 

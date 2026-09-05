@@ -10,6 +10,7 @@ import { Matrix } from './pages/Matrix'
 import { Methodology } from './pages/Methodology'
 import { NotFound } from './pages/NotFound'
 import { Overview } from './pages/Overview'
+import { Poster } from './pages/Poster'
 import { Scenario } from './pages/Scenario'
 import { Workloads } from './pages/Workloads'
 import { useTheme } from './utils/theme'
@@ -47,6 +48,9 @@ export function App() {
 
   return (
     <Routes>
+      {/* Outside Layout: the poster is a standalone artefact exported to PNG, with no
+          site chrome. Its caveat is printed on the poster itself. */}
+      <Route path="poster/:iso" element={<Poster bundle={bundle} />} />
       <Route element={<Layout generated={bundle.generated} />}>
         <Route index element={<Overview bundle={bundle} />} />
         <Route path="matrix" element={<Matrix bundle={bundle} mode={mode} />} />

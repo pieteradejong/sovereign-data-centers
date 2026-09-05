@@ -27,4 +27,4 @@ web/dist/
 .vercel/
 
 # Outreach contact lists: institutional map is public, named individuals are not
-paper_book/contacts/
+book/contacts/

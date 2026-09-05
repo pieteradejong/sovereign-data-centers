@@ -20,6 +20,8 @@ model/
   generate_countries.py      builds countries/<ISO>/ inputs + GOAL.md for all 27, runs the model, writes SUMMARY.md
   export_json.py             writes web/public/data/eu27.json from the same dict
   eu27_results.csv           one result row per country (generated)
+book/                        print edition and per-country PDF briefs (typst); see book/README.md
+OUTREACH.md                  institutional distribution map, one entry per member state
 countries/
   SUMMARY.md                 cross-country table (generated)
   NL/                        the reference case: hand-written GOAL.md, xlsx model, inputs, infographic, TODO, plan
@@ -43,7 +45,12 @@ renderings of one `country_data.build()` dict, so they cannot disagree with each
 ./run.sh data                               # regenerate country files, briefs and the JSON bundle
 ./run.sh help                               # every command
 ./test.sh                                   # the full gate: model, types, lint, unit, build, e2e, a11y
+./run.sh export                             # 27 standalone A4 country briefs (PDF)
+./run.sh book                               # typeset the A5 print edition
 ```
+
+`export` and `book` need typst (`brew install typst`). Nothing they produce is committed —
+see `DECISIONS.md` #41.
 
 The model on its own, without the app:
 
