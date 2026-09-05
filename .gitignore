@@ -32,3 +32,7 @@ web/dist/
 paper_book/contacts/
 **/contacts/
 *-contacts.md
+
+# Playwright output
+web/test-results/
+web/playwright-report/

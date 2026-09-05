@@ -1,6 +1,6 @@
 # Belgium - Sovereign Government Data Center Network
 
-> Generated 2026-09-03 by `model/generate_countries.py` from the Dutch reference case
+> Generated 2026-09-05 by `model/generate_countries.py` from the Dutch reference case
 > (`countries/NL/GOAL.md`) and `model/eu27_parameters.csv`. Every number below is a **scaled working
 > assumption**, not a sourced figure. Edit the CSVs in this directory and re-run
 > `python3 model/capacity_model.py BE` to update the capacity numbers; edit
@@ -107,6 +107,12 @@ No seismic; dense and land-constrained; Meuse flood risk (2021); Elia grid conne
 
 ## 10. Legal and regulatory posture
 
+> **These entries are unverified research, not legal advice.** They were compiled in September 2026 from
+> public policy documents and have **not** been checked against the primary instruments. The maturity,
+> certification-strength and dependency ratings below are the author's judgements, not official or
+> measured ratings. Do not rely on this section for a procurement or policy decision. Corrections are
+> welcome via the repository's issue template.
+
 Every member state shares one baseline: GDPR for personal data, NIS2 for the security of essential
 entities, the Data Act for switching and access, and the EU Cloud Services Scheme (EUCS) still unresolved
 on the sovereignty requirements that would matter most here. That baseline governs *processing*. It does
@@ -138,7 +144,7 @@ therefore necessary but not sufficient; what matters is who holds the keys and w
 | | |
 |---|---|
 | Government cloud | Federal G-Cloud (BOSA/Smals community cloud); Smals selected Google Cloud as public-cloud pillar (Jun 2026) under federal sovereignty/portability rules |
-| Maturity | operational |
+| Maturity | operational (author's rating, not an official one) |
 | Digital identity | Belgian eID card + itsme (CSAM) |
 | In-country commercial regions | 2 |
 | Interconnection | BNIX Brussels; transit via Amsterdam/London |

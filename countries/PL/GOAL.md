@@ -1,6 +1,6 @@
 # Poland - Sovereign Government Data Center Network
 
-> Generated 2026-09-03 by `model/generate_countries.py` from the Dutch reference case
+> Generated 2026-09-05 by `model/generate_countries.py` from the Dutch reference case
 > (`countries/NL/GOAL.md`) and `model/eu27_parameters.csv`. Every number below is a **scaled working
 > assumption**, not a sourced figure. Edit the CSVs in this directory and re-run
 > `python3 model/capacity_model.py PL` to update the capacity numbers; edit
@@ -109,6 +109,12 @@ Frontline: borders Kaliningrad, Belarus and Ukraine; recurring sabotage/arson an
 
 ## 10. Legal and regulatory posture
 
+> **These entries are unverified research, not legal advice.** They were compiled in September 2026 from
+> public policy documents and have **not** been checked against the primary instruments. The maturity,
+> certification-strength and dependency ratings below are the author's judgements, not official or
+> measured ratings. Do not rely on this section for a procurement or policy decision. Corrections are
+> welcome via the repository's issue template.
+
 Every member state shares one baseline: GDPR for personal data, NIS2 for the security of essential
 entities, the Data Act for switching and access, and the EU Cloud Services Scheme (EUCS) still unresolved
 on the sovereignty requirements that would matter most here. That baseline governs *processing*. It does
@@ -140,7 +146,7 @@ therefore necessary but not sufficient; what matters is who holds the keys and w
 | | |
 |---|---|
 | Government cloud | WIIP: Rzadowa Chmura Obliczeniowa (RChO, COI/NASK, Ministry of Digital Affairs) + ZUCH public-cloud marketplace; Chmura Krajowa/OChK (PKO BP + PFR) commercial; national sovereign cloud/AI factory debate under EU CADA |
-| Maturity | operational |
+| Maturity | operational (author's rating, not an official one) |
 | Digital identity | Profil Zaufany / mObywatel / e-dowod |
 | In-country commercial regions | 2 |
 | Interconnection | PLIX and Equinix IX Warsaw; no major subsea landing |

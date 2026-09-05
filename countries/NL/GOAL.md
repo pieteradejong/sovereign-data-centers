@@ -1,6 +1,10 @@
 # Dutch Sovereign Data Centers / RijksCloud
 
 > Working design document for a sovereign Dutch government and critical-infrastructure compute platform.
+>
+> **Every figure here is an order-of-magnitude planning number, not a sourced forecast**, and the
+> institutional and policy descriptions are unverified research. RijksCloud is a proposed name; no
+> such programme exists. This is independent analysis, not a government document.
 
 ## 1. Core idea
 

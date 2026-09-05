@@ -1,6 +1,6 @@
 # EU-27 sovereign data center capacity - summary
 
-Generated 2026-09-03 by `model/generate_countries.py`. All figures are scaled working assumptions derived from the Dutch reference case; see each country's `GOAL.md`.
+Generated 2026-09-05 by `model/generate_countries.py`. All figures are scaled working assumptions derived from the Dutch reference case; see each country's `GOAL.md`.
 
 | ISO | Country | Pop (m) | Servers | Racks | IT MW | Design MW | Sites | CAPEX (EUR m) | OPEX (EUR m/yr) | Power price | Flags |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
@@ -34,5 +34,7 @@ Generated 2026-09-03 by `model/generate_countries.py`. All figures are scaled wo
 | | **EU-27 total** | | **125,089** | | | **306** | **86** | **7,236** | **735** | | |
 
 Flags: *frontline* = land border with Russia/Belarus or Black Sea war exposure (defense/security workloads scaled up, hardened site posture); *grid-isolated* = electrical island or near-island; *seismic* = high seismic risk at the capital region; *micro* = two in-country sites only.
+
+**Ratings are judgements, not measurements.** `gov_cloud_maturity`, `certification_strength` and `hyperscaler_dependency` were assigned by the author from public policy documents in September 2026 and are not official or verified ratings. See `model/README.md`.
 
 Machine-readable: `model/eu27_results.csv`.

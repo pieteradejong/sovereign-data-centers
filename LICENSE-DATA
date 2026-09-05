@@ -1,0 +1,48 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 Pieter de Jong
+
+WHAT THIS COVERS
+
+  model/*.csv                     the parameter, assumption, scaling and phase datasets
+  countries/**                    per-country inputs, model outputs, briefs and artefacts
+  web/public/data/eu27.json       the exported bundle
+  *.md                            the written documents in this repository
+
+The code is licensed separately under LICENSE (MIT). Images have their own
+provenance notes in ASSETS.md.
+
+WHY A SEPARATE LICENCE
+
+MIT grants rights over "the Software" and does not map cleanly onto a dataset. This
+repository is roughly half data by value, and it is a dataset about the European
+Union, where a substantial database also attracts a sui generis extraction right
+under Directive 96/9/EC that MIT does not address at all. CC BY 4.0 explicitly
+licenses those rights and makes attribution unambiguous.
+
+Attribution matters here for a specific reason. This dataset contains contestable
+judgements about named states -- ordinal ratings of government-cloud maturity,
+certification strength and hyperscaler dependency, assigned by the author and not
+by any official body. Requiring attribution keeps those ratings traceable back to
+their caveats instead of circulating as bare facts.
+
+TERMS
+
+You are free to share and adapt this material for any purpose, including
+commercially, provided you give appropriate credit, link to the licence, and
+indicate if changes were made.
+
+Attribute as:
+
+  EU-27 Sovereign Data Centres, Pieter de Jong, CC BY 4.0
+  https://github.com/pieteradejong/sovereign-data-centers
+
+The full licence text is at https://creativecommons.org/licenses/by/4.0/legalcode
+
+NO WARRANTY, AND A WARNING ABOUT ACCURACY
+
+The material is provided as-is. Beyond the usual disclaimer, note that the legal
+and regulatory entries in this dataset are unverified research compiled in
+September 2026, and the ordinal ratings are the author's judgements. They have not
+been checked against primary sources. See model/README.md before reusing them, and
+do not rely on them for a procurement or policy decision.

@@ -1,3 +1,8 @@
+The MIT License below covers the code only: model/*.py, tests/, web/src/,
+web/e2e/, and the *.sh scripts. It does NOT cover the dataset or the documents
+generated from it -- see LICENSE-DATA (CC BY 4.0) -- nor the images, which are
+described in ASSETS.md.
+
 MIT License
 
 Copyright (c) 2026 Pieter de Jong

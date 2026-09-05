@@ -24,7 +24,8 @@ book/                        print edition and per-country PDF briefs (typst); s
 OUTREACH.md                  institutional distribution map, one entry per member state
 countries/
   SUMMARY.md                 cross-country table (generated)
-  NL/                        the reference case: hand-written GOAL.md, xlsx model, inputs, infographic, TODO, plan
+  NL/                        the reference case: hand-written GOAL.md, xlsx model, inputs, TODO, plan,
+                             and the AI-generated concept infographic (see ASSETS.md)
   DE/ FR/ ... (x26)          params.csv, workloads_inputs.csv, region_allocation_inputs.csv (generated inputs, edit freely)
                              GOAL.md (generated 12-section brief), facility_summary.csv,
                              region_allocation_output.csv, migration_phases.csv (outputs)
@@ -148,6 +149,23 @@ schemes, classification ladders and procurement routes are assertions about what
 actually require, and they have **not yet been verified against primary sources**. Nothing here should be
 relied on for a procurement or policy decision until that verification is done — see `DECISIONS.md` #25
 for the gate, and open an issue if you can correct an entry.
+
+## Licence
+
+Two licences, because this repository holds two different things.
+
+| | Covers | Terms |
+|---|---|---|
+| `LICENSE` | The code — `model/*.py`, `tests/`, `web/src/`, `web/e2e/`, `*.sh` | MIT |
+| `LICENSE-DATA` | The dataset and documents — `model/*.csv`, `countries/**`, the JSON bundle, the markdown | CC BY 4.0 |
+
+Images are a separate case again: provenance for every one, including which are AI-generated, is in
+[`ASSETS.md`](ASSETS.md).
+
+CC BY rather than MIT for the data because MIT grants rights over "the Software" and says nothing about a
+database, and because an EU-focused dataset attracts a sui generis right under Directive 96/9/EC that MIT
+does not address. Attribution also keeps the contestable ratings in this dataset traceable back to their
+caveats.
 
 ## Reference case
 

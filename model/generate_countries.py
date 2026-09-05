@@ -491,6 +491,12 @@ fault or flood zone). They are to be replaced by the scored site selection in wo
 
 ## 10. Legal and regulatory posture
 
+> **These entries are unverified research, not legal advice.** They were compiled in September 2026 from
+> public policy documents and have **not** been checked against the primary instruments. The maturity,
+> certification-strength and dependency ratings below are the author's judgements, not official or
+> measured ratings. Do not rely on this section for a procurement or policy decision. Corrections are
+> welcome via the repository's issue template.
+
 Every member state shares one baseline: GDPR for personal data, NIS2 for the security of essential
 entities, the Data Act for switching and access, and the EU Cloud Services Scheme (EUCS) still unresolved
 on the sovereignty requirements that would matter most here. That baseline governs *processing*. It does
@@ -522,7 +528,7 @@ therefore necessary but not sufficient; what matters is who holds the keys and w
 | | |
 |---|---|
 | Government cloud | {c['sovereign_cloud_initiative']} |
-| Maturity | {c['gov_cloud_maturity']} |
+| Maturity | {c['gov_cloud_maturity']} (author's rating, not an official one) |
 | Digital identity | {c['digital_id']} |
 | In-country commercial regions | {hs} |
 | Interconnection | {c['ixp']} |
@@ -596,6 +602,10 @@ def write_summary(results: list[tuple[dict, cm.Summary]]) -> None:
         "Flags: *frontline* = land border with Russia/Belarus or Black Sea war exposure (defense/security workloads scaled up, "
         "hardened site posture); *grid-isolated* = electrical island or near-island; *seismic* = high seismic risk at the "
         "capital region; *micro* = two in-country sites only.",
+        "",
+        "**Ratings are judgements, not measurements.** `gov_cloud_maturity`, `certification_strength` and "
+        "`hyperscaler_dependency` were assigned by the author from public policy documents in September "
+        "2026 and are not official or verified ratings. See `model/README.md`.",
         "",
         "Machine-readable: `model/eu27_results.csv`.",
     ]

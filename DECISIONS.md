@@ -265,6 +265,15 @@ figure; it does not cover asserting what Spain's certification regime requires. 
 claims under an authoritative-sounding domain is this project's one real reputational risk, and a printed
 book cannot be corrected after the fact.
 
+**Amended 2026-09-05.** As first written, this gate named only the website and the printed book. The
+public GitHub repository is a **third publication channel**, and it went live on 2026-09-04 with the legal
+cells still unverified. That was deliberate rather than an oversight: a public repository carrying
+prominent caveats and a corrections channel is a reasonable way to *obtain* verification, and it is the
+lowest-stakes of the three because a reader arrives at source files that say what they are. The gate on
+the custom domain and on print is unchanged. What the repository owes in exchange is that the caveat
+travels with the claim — hence the section 10 warning, the `data_status` column, `model/README.md` and the
+caveat printed on every poster.
+
 ### 26. Named individuals never go in the public repo
 **2026-09-04.** The outreach contact list holds institutional roles and published official contact points —
 committee, directorate, agency. Named individuals with contact details live in `book/contacts/`,
