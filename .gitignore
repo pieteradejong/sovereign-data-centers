@@ -29,7 +29,12 @@ web/dist/
 # Outreach contact lists. The institutional map is public (see README); files
 # naming individuals are not: a public official's work contact is still personal
 # data, and a public repo is a scrape target. See DECISIONS.md #26.
-paper_book/contacts/
+#
+# Since 2026-09-06 named individuals live in the separate PRIVATE repo
+# sovereign-data-centers-contacts, so nothing here should need these rules.
+# They stay as a backstop: they cost nothing and they catch the obvious
+# mistakes. They are not a licence to keep personal data here again --
+# filename-based protection nearly failed twice (DECISIONS.md #26).
 **/contacts/
 *-contacts.md
 

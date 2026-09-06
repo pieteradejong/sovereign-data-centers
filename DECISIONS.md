@@ -276,8 +276,8 @@ caveat printed on every poster.
 
 ### 26. Named individuals never go in the public repo
 **2026-09-04.** The outreach contact list holds institutional roles and published official contact points —
-committee, directorate, agency. Named individuals with contact details live in `book/contacts/`,
-which is gitignored.
+committee, directorate, agency. Named individuals live in the separate **private** repo
+`sovereign-data-centers-contacts`.
 
 A list of named officials in a public GitHub repo is a scrape target, ages badly, and a public official's
 work contact is still personal data under GDPR requiring a documented lawful basis. The institutional map
@@ -473,9 +473,9 @@ and it is the same one for both.
 Either the build installs typst, or CI builds the briefs and attaches them to a GitHub Release with the app
 linking out. Unresolved; the local build is correct either way.
 
-### 43. The outreach map is institutional; individuals are gitignored
+### 43. The outreach map is institutional; individuals live elsewhere
 **2026-09-04.** `OUTREACH.md` carries offices, agencies, committees and press desks for all 27 states plus
-the EU layer. Named individuals go in `book/contacts/`, which is gitignored under #26.
+the EU layer. Named individuals go in the private `sovereign-data-centers-contacts` repo, under #26.
 
 Two-thirds of the map was already in `model/eu27_parameters.csv` — `sovereign_cloud_initiative`,
 `certification_scheme` and `procurement_vehicle` name the operator, the certifying authority and the buying
@@ -598,3 +598,32 @@ lands in a country directory must respect this.
 The cost figures in it are reconstructed order-of-magnitude estimates, not sourced values,
 and are labelled as such. This is a lower evidentiary standard than the model's parameters
 and the note must not be cited as if it met the same bar (#25).
+
+### 45. Named individuals move to a separate private repo
+**2026-09-06.** Contact material naming individuals no longer lives in this repo under
+`.gitignore` protection. It lives in the private repo `sovereign-data-centers-contacts`, one
+directory per ISO code, mirroring `countries/`. #26 stands — the reasoning is unchanged — but
+the mechanism is now repo visibility rather than pattern matching. The ignore rules
+(`**/contacts/`, `*-contacts.md`) stay as a backstop; the redundant `paper_book/contacts/`
+line is dropped.
+
+Filename-based protection kept nearly failing, in the same direction each time. #40 records
+the first near miss: `.gitignore` said `book/contacts/` when the directory was
+`paper_book/contacts/`, so it went unprotected until caught. The second surfaced while adding
+the NL list: `NL-contacts-NOTES.md` reads as contacts-related but does not match
+`*-contacts.md`, and would have been committed to a public repo. Both were caught, but the
+failure mode is a silent one — the file simply becomes publishable, and nothing complains.
+
+The second reason is backup, and it is the one that actually forced the move. Gitignored
+files are not pushed anywhere, so the contact material existed on exactly one laptop, with a
+clean `git status` giving the false impression it was safe. A private repo protects and backs
+up in the same act.
+
+The `llm-compiler` layered guard (hooks plus a forbidden-path CI check plus Gitleaks) was the
+alternative and was rejected: it exists to keep private files *inside* an otherwise-public
+repo, which is a harder problem than simply not putting them there. It stays the right answer
+for `llm-compiler`, where the private notes and the public code genuinely share a tree.
+
+Also resolves the `paper_book/` leftover from #38. Its `contacts/README.md` — never moved
+during the rename — held the actual rules for contact records, and is now `CONVENTIONS.md` in
+the private repo.

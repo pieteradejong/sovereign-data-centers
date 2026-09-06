@@ -9,7 +9,7 @@ cover it. Ordered by modelled stake (largest first), matching `countries/SUMMARY
 
 **This file is institutional only.** Offices, agencies, committees and press desks — all
 public record, all stable across a legislature. Named individuals, personal addresses and
-direct lines go in `book/contacts/`, which `.gitignore:33` already excludes for
+direct lines go in the separate **private** repo `sovereign-data-centers-contacts`, for
 exactly this reason. Do not add a person's name to this file.
 
 ## Provenance — read before sending anything
@@ -558,4 +558,4 @@ separation available, which the model flags as insufficient.
       the generated briefs are scaled from the Dutch baseline and say so, which is fine for a
       calibration request but thin for a ministerial send
 - [ ] Resolve the missing `model/export_artifacts.py` if PDFs rather than Markdown are wanted
-- [ ] Named individuals and addresses → `book/contacts/`, never this file
+- [ ] Named individuals and addresses → private `sovereign-data-centers-contacts` repo, never this file
