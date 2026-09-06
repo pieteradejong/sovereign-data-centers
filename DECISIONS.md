@@ -573,3 +573,28 @@ independent and unaffiliated.
 'none'`), `nosniff`, `DENY` framing and a restrictive `Permissions-Policy`. The app makes
 one network call — fetching its own data bundle — so nothing looser is needed. No
 analytics.
+
+### 44. The frontier-model question is answered in-repo, and kept separate from the capacity case
+**2026-09-06.** "Why not build our own model too?" comes up every time the sovereign cloud
+plan is discussed, so the answer now lives in `countries/NL/FRONTIER-MODEL.md` rather than
+being re-argued each time. It was drafted as a standalone repo and merged here instead,
+because it is a Netherlands-specific note that only makes sense next to the NL reference case.
+
+**It is deliberately framed as a separate ask, not an extension of RijksCloud.** A frontier
+training cluster is ~150 MW against RijksCloud's 14.2 MW design load, and $4-6B against
+€339M CAPEX — more than ten times the power and an order of magnitude more capital, for one
+purpose. The two proposals compete for the same scarce input, Dutch grid connections, and
+bundling them would make the government-cloud case politically unaffordable. The note says so
+explicitly, and also records where the arguments against a national frontier model are
+*weaker* against a sovereign cloud (jurisdiction is not fungible; buildings depreciate over
+decades, accelerators over three years).
+
+**Placement follows the generation rule.** `GOAL.md`, `params.csv`, `workloads_inputs.csv` and
+the region files under `countries/<ISO>/` are rewritten by `generate_countries.py` on every
+`run.sh data`. `FRONTIER-MODEL.md` uses a name the generator never writes, so it survives —
+the same property `CAPACITY_PLAN.md` and `TODO.md` already rely on. Anything authored that
+lands in a country directory must respect this.
+
+The cost figures in it are reconstructed order-of-magnitude estimates, not sourced values,
+and are labelled as such. This is a lower evidentiary standard than the model's parameters
+and the note must not be cited as if it met the same bar (#25).

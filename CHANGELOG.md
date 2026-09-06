@@ -5,6 +5,30 @@ What changed and when. Reasoning for the choices behind these changes lives in
 
 ---
 
+## 2026-09-06
+
+### Added — the frontier-model note (`countries/NL/FRONTIER-MODEL.md`)
+
+An authored companion to the RijksCloud capacity plan answering "what would it take for the Netherlands
+to develop its own frontier model, or at least something suitable?" — the question that comes up every
+time the sovereign cloud plan is discussed. Drafted as a standalone repo, merged here because it only
+makes sense next to the NL reference case. Reasoning in DECISIONS.md #44.
+
+Three tiers, costed: sovereign *deployment* capability (€50-150M, 18 months, fits inside RijksCloud's
+existing GPU envelope), sovereign mid-scale pretraining (€1.5-3B, 5 years, Eemshaven), and frontier
+parity (€15-30B+, only as lead partner in an EU gigafactory consortium). Conclusion: frontier parity is
+not unilaterally feasible and is the wrong goal; the binding constraints are grid capacity, a
+Dutch-language corpus ~1% the size of a frontier training corpus, and training talent.
+
+The note is deliberately framed as a **separate** ask from RijksCloud — ~150 MW against 14.2 MW, $4-6B
+against €339M — because the two compete for the same Dutch grid connections and bundling them would sink
+the government-cloud case.
+
+Unlike everything else under `countries/`, this file is authored, not generated. `run.sh data` does not
+write it; the name is one `generate_countries.py` never touches, like `CAPACITY_PLAN.md` and `TODO.md`.
+Its cost figures are reconstructed order-of-magnitude estimates, labelled as such, and held to a lower
+evidentiary standard than the model's parameters.
+
 ## 2026-09-04 (later)
 
 ### Added — the book (`book/`)

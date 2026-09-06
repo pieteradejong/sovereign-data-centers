@@ -25,7 +25,8 @@ OUTREACH.md                  institutional distribution map, one entry per membe
 countries/
   SUMMARY.md                 cross-country table (generated)
   NL/                        the reference case: hand-written GOAL.md, xlsx model, inputs, TODO, plan,
-                             and the AI-generated concept infographic (see ASSETS.md)
+                             FRONTIER-MODEL.md (authored companion note, not generated), and the
+                             AI-generated concept infographic (see ASSETS.md)
   DE/ FR/ ... (x26)          params.csv, workloads_inputs.csv, region_allocation_inputs.csv (generated inputs, edit freely)
                              GOAL.md (generated 12-section brief), facility_summary.csv,
                              region_allocation_output.csv, migration_phases.csv (outputs)
