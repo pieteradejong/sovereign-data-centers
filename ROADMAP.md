@@ -82,7 +82,7 @@ egress beyond the app fetching its own bundle. Critical-infrastructure sensitivi
 cleared as ordinary published policy analysis — the facts are public, the resolution is metro-level, and
 the sites are explicitly hypothetical.
 
-Four findings remain open:
+All four were remediated in `f03fde7` (2026-09-05) and are closed. Recorded here for the trail:
 
 | # | Finding | Remediation | Severity |
 |---|---|---|---|
@@ -90,6 +90,42 @@ Four findings remain open:
 | 2 | Unverified legal claims lose their caveat where a reader meets them — brief §10 is prose, and the header caveat covers only "every number"; the CSVs render on GitHub as authoritative tables | Caveat inside §10; disclose the ordinal columns as author judgements; caveat in the CSVs; record the public repo as a publication channel in `DECISIONS.md` #25 | Medium-high |
 | 3 | MIT covers software, not the dataset, and does not address the EU sui generis database right | Split licence: MIT for code, CC BY 4.0 for data, following the `projects/newsletter` pattern | Medium |
 | 4 | Housekeeping: committed Playwright output, a byte-duplicate of the NL brief, dangling `~/dev/...` references | Remove, confirm, annotate | Low |
+
+### Security-audit remediation — round two
+
+**A second audit was run 2026-09-06**, covering the working tree and all 21 commits of history rather
+than the current state alone. The repository came back clean on every question that matters for a public
+repo: no secrets in the tree or in any commit; no emails, phone numbers or local home paths in tracked
+files; zero npm vulnerabilities across five exact-pinned runtime dependencies; no XSS sink and a single
+same-origin `fetch`; strict CSP; CI on `pull_request` rather than `pull_request_target`, so fork PRs
+cannot reach secrets; and no author name or local path embedded in the generated PDF metadata.
+
+**The contacts split (#45) was verified end to end**, since it landed the same day. The private repo is
+in fact private, and is pushed and in sync with its origin — which is the part that matters, because
+#45's stated rationale is backup, and an unpushed private repo would have satisfied the privacy half of
+that argument while quietly failing the other half. Every distinctive token in the private files was then
+cross-checked against the public repo's full history: zero emails, zero phone numbers and zero personal
+names appear anywhere in it. The only overlaps are `European Parliament` and `Tweede Kamer`, which are
+institutions and belong in the public outreach map.
+
+Four findings, none of them a disclosure:
+
+| # | Finding | Remediation | Severity |
+|---|---|---|---|
+| 1 | 56 generated binaries (27 briefing PDFs, 27 infographic PNGs, 12.7 MB of a 17 MB `.git`) are committed, directly contradicting `README.md` ("Nothing they produce is committed") and #41 ("No generated PDF is ever committed"). `model/export_artifacts.py` writes them into `countries/<ISO>/`, a path #41's safeguard never covered | Decide whether the briefs ship in-repo deliberately — then correct `README.md` and #41 to say so — or are committed by accident, and gitignore them. Only one commit has touched them, so history is still cheap to keep clean | Medium |
+| 1a | Those PDFs embed a real wall-clock `CreationDate` rather than the pinned `.build-epoch`, so they are not byte-reproducible and every rebuild produces a spurious diff. Their `Creator` is `HeadlessChrome`/`Skia`, not the typst path `README.md` implies | Honour `SOURCE_DATE_EPOCH` in the Chromium export, or accept the churn as the cost of committing them | Medium |
+| 2 | `.github/workflows/ci.yml` declares no `permissions:` block and inherits the default `GITHUB_TOKEN` scope, though the job runs stdlib Python and needs read only | Add `permissions: contents: read` | Low-medium |
+| 3 | `ROADMAP.md` still described the four 2026-09-04 findings as open after `f03fde7` closed them, and still pointed named individuals at `paper_book/contacts/` after #45 moved them to a private repo | Fixed in this pass | Low |
+
+**Informational.** `pieter.a.dejong@gmail.com` appears as committer on all 21 commits and is permanently
+public. This matches `chokepoints-globe` and is presumably deliberate; it is noted only because
+`~/dev/CLAUDE.md` calls it out, and because it cannot be scrubbed without rewriting history.
+
+**The pattern worth naming.** Findings 1 and 3 are the same failure as the two near misses already
+recorded in #40 and #45: a document asserts a rule, the tree quietly stops matching it, and nothing
+complains. Three of the four findings above are drift between what the docs claim and what the repository
+does — none of them dangerous on its own, all of them the shape that hides something that is. The
+countermeasure is a check that fails the build, not a more carefully written sentence.
 
 ---
 
@@ -126,7 +162,8 @@ to be written; the 27 briefings become an explicitly labelled reference section.
 `run.sh book` dispatches to `paper_book/build.py`, which **does not exist yet.**
 
 ### Later — outreach
-The institutional map is in the README. Named individuals stay in `paper_book/contacts/`, gitignored, in
+The institutional map is in the README. Named individuals live in the private repo
+`sovereign-data-centers-contacts` (#45), no longer in this tree, in
 official capacity only. Outreach itself waits on verification: the first thing any of these bodies would
 check is the entry about their own country.
 

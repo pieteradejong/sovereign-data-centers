@@ -7,6 +7,34 @@ What changed and when. Reasoning for the choices behind these changes lives in
 
 ## 2026-09-06
 
+### Repository lineage — where the frontier note came from
+
+The note was first published as a standalone public repo, `pieteradejong/dutch_frontier_model`, before it
+was clear it belonged here. That repo is now **archived** and read-only, with its description pointing at
+`countries/NL/FRONTIER-MODEL.md` so the old URL still leads somewhere useful. Nothing was deleted: the
+single commit remains readable, and the local working copy was removed once the content landed here.
+
+Archiving locks a repo immediately, so setting that forwarding description required unarchiving it for
+one call and re-archiving straight after. Worth knowing before archiving anything else.
+
+### Audited — security and privacy, round two
+
+Second full audit, 2026-09-06, covering the working tree **and** all 21 commits rather than the current
+state alone. Findings and the verification detail are in [`ROADMAP.md`](ROADMAP.md); the summary is that
+nothing is disclosed and three of the four findings are documentation drift.
+
+The audit also closed out bookkeeping the repo had been carrying: the four 2026-09-04 findings were
+remediated in `f03fde7` but `ROADMAP.md` still listed them as open, and it still sent readers to
+`paper_book/contacts/` for named individuals after #45 moved them into a private repo. Both corrected.
+
+The contacts split (#45) landed the same day and was verified rather than taken on trust — the private
+repo is private, is pushed and in sync with origin, and no token from it appears anywhere in this
+repository's history. See ROADMAP for why the "pushed" half of that check is the one that matters.
+
+**Open, and deliberately not fixed here:** 56 generated binaries (27 briefing PDFs, 27 infographic PNGs,
+12.7 MB) are committed even though `README.md` and #41 both say they never are. That needs a decision
+about intent, not a patch — see ROADMAP finding 1.
+
 ### Added — the frontier-model note (`countries/NL/FRONTIER-MODEL.md`)
 
 An authored companion to the RijksCloud capacity plan answering "what would it take for the Netherlands
