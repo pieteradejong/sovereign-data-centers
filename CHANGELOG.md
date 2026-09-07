@@ -5,6 +5,37 @@ What changed and when. Reasoning for the choices behind these changes lives in
 
 ---
 
+## 2026-09-07
+
+### Changed — the contacts repo now lives at `contacts/`
+
+`sovereign-data-centers-contacts` moved from a sibling directory under `~/dev/projects/` to `contacts/`
+inside this working tree. It is still a separate private repo with its own `.git` and its own remote —
+nothing was merged and no file crossed between repos. Reasoning in [`DECISIONS.md`](DECISIONS.md) #46.
+
+Verified rather than assumed, because #40 and #45 both record this exact class of assumption going wrong:
+
+| Check | Result |
+|---|---|
+| `git -C contacts remote -v`, `status -sb` | private remote intact, `main` in sync, one commit `9e0270f` |
+| `git status --porcelain`, `git ls-files contacts` | both empty — the outer repo sees nothing |
+| `git check-ignore -v contacts/NL/list.md` | `.gitignore:38:**/contacts/` |
+| `git add -f contacts/` on a scratch clone with the real files | one mode-160000 gitlink, 180 bytes; 473 distinctive tokens from `NL/list.md`, zero in the staged diff |
+| `git clean -nxfd` | does **not** list `contacts/` — one `-f` refuses to remove a nested repo |
+| `git clean -nxffd` | **does** list it. The one new hazard; keep the private repo pushed |
+| 18 name strings from the private files vs. all 21 public commits | only `European Parliament` and `Tweede Kamer` — institutions, same result as #45's audit |
+| `./test.sh --no-e2e` | passes; the generators walk `countries/` only |
+
+The `.gitignore` rules (`**/contacts/`, `*-contacts.md`) stay, demoted to a second layer behind the
+nested `.git`, and the comment block above them now says so.
+
+### Removed — the empty `book/contacts/`
+
+Left behind by the `paper_book/` → `book/` rename (#38) and the near miss in #40. An empty directory
+called `contacts` in this repo is a trap for precisely the mistake the ignore rules exist to prevent.
+
+---
+
 ## 2026-09-06
 
 ### Repository lineage — where the frontier note came from
@@ -72,7 +103,6 @@ app render from, so the book cannot drift from the model.
 | `book/templates/style.typ` | Mono interior (#28), two page geometries (#40), shared table helpers |
 | `book/manuscript/` | Parts I, II and V — **scaffolds**, spine only, ~24k words still to write |
 | `book/build/` | Output. Gitignored (#41) |
-| `book/contacts/` | Named individuals. Gitignored (#26) |
 
 Current output: 81 pages, 703 KB. Parts III and IV are complete; the authored parts are chapter headings
 and opening paragraphs.

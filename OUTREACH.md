@@ -12,6 +12,10 @@ public record, all stable across a legislature. Named individuals, personal addr
 direct lines go in the separate **private** repo `sovereign-data-centers-contacts`, for
 exactly this reason. Do not add a person's name to this file.
 
+Since 2026-09-07 that private repo is checked out at `contacts/` in this working tree
+(#46). It being one `cd` away rather than one directory up changes nothing about the rule:
+it is a different repo with a different visibility, and no row crosses between them.
+
 ## Provenance — read before sending anything
 
 | Rows | Source | Confidence |
@@ -558,4 +562,5 @@ separation available, which the model flags as insufficient.
       the generated briefs are scaled from the Dutch baseline and say so, which is fine for a
       calibration request but thin for a ministerial send
 - [ ] Resolve the missing `model/export_artifacts.py` if PDFs rather than Markdown are wanted
-- [ ] Named individuals and addresses → private `sovereign-data-centers-contacts` repo, never this file
+- [ ] Named individuals and addresses → private `sovereign-data-centers-contacts` repo (checked out at
+      `contacts/`, #46), never this file

@@ -100,7 +100,9 @@ files; zero npm vulnerabilities across five exact-pinned runtime dependencies; n
 same-origin `fetch`; strict CSP; CI on `pull_request` rather than `pull_request_target`, so fork PRs
 cannot reach secrets; and no author name or local path embedded in the generated PDF metadata.
 
-**The contacts split (#45) was verified end to end**, since it landed the same day. The private repo is
+**The contacts split (#45) was verified end to end**, since it landed the same day. (The private repo
+moved to `contacts/` inside this tree on 2026-09-07 under #46; it is the same repo with the same remote,
+and the checks below were re-run after the move with the same results.) The private repo is
 in fact private, and is pushed and in sync with its origin — which is the part that matters, because
 #45's stated rationale is backup, and an unpushed private repo would have satisfied the privacy half of
 that argument while quietly failing the other half. Every distinctive token in the private files was then
@@ -163,7 +165,8 @@ to be written; the 27 briefings become an explicitly labelled reference section.
 
 ### Later — outreach
 The institutional map is in the README. Named individuals live in the private repo
-`sovereign-data-centers-contacts` (#45), no longer in this tree, in
+`sovereign-data-centers-contacts` (#45), checked out at `contacts/` since 2026-09-07 but
+still a separate private repo with its own remote (#46), in
 official capacity only. Outreach itself waits on verification: the first thing any of these bodies would
 check is the entry about their own country.
 

@@ -30,11 +30,20 @@ web/dist/
 # naming individuals are not: a public official's work contact is still personal
 # data, and a public repo is a scrape target. See DECISIONS.md #26.
 #
-# Since 2026-09-06 named individuals live in the separate PRIVATE repo
-# sovereign-data-centers-contacts, so nothing here should need these rules.
-# They stay as a backstop: they cost nothing and they catch the obvious
-# mistakes. They are not a licence to keep personal data here again --
-# filename-based protection nearly failed twice (DECISIONS.md #26).
+# contacts/ is a real directory again as of 2026-09-07, but it is NOT this
+# repo's content: it is the working tree of the separate PRIVATE repo
+# sovereign-data-centers-contacts, checked out here (DECISIONS.md #46). It
+# carries its own .git and its own remote.
+#
+# That nested .git is the protection, not these two lines. Git will not descend
+# into a directory containing .git, so even `git add -f contacts/` stages a
+# mode-160000 gitlink -- 180 bytes naming a commit -- and never a single line of
+# file content. A filename mistake can no longer leak a name, which is the
+# failure mode #40 and #45 record happening twice.
+#
+# These rules are the second layer. They keep contacts/ out of `git status`, and
+# *-contacts.md still catches a stray file written outside that directory. They
+# are not a licence to keep personal data in this repo's own tree.
 **/contacts/
 *-contacts.md
 

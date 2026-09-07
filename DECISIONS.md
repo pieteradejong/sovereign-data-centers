@@ -627,3 +627,58 @@ for `llm-compiler`, where the private notes and the public code genuinely share 
 Also resolves the `paper_book/` leftover from #38. Its `contacts/README.md` — never moved
 during the rename — held the actual rules for contact records, and is now `CONVENTIONS.md` in
 the private repo.
+
+### 46. The contacts repo is nested inside this one, not merged into it
+**2026-09-07.** `sovereign-data-centers-contacts` is now checked out at `contacts/` rather
+than living as a sibling directory under `~/dev/projects/`. It is still a separate private
+repo with its own `.git` and its own remote — nothing was merged, and no file moved between
+repos. #26, #40 and #45 all stand unchanged; this is a change of *where the private working
+tree sits on disk*, not of the boundary.
+
+The reason is friction. The private tree mirrors `countries/<ISO>/` one directory at a time,
+and working on the NL entry meant two checkouts, two `cd`s and two mental models of the same
+country.
+
+**Both of #45's protections survive intact, which is the whole test of this arrangement.**
+
+*Backup*, #45's deciding reason: the nested repo keeps its own private remote, so the
+material is still pushed somewhere and still exists on more than one laptop. Merging the
+files in under `.gitignore` — the obvious reading of "consolidate them" — would have thrown
+this away, and it is the thing #45 says actually forced the split.
+
+*Leak resistance* is now stronger than either arrangement. Git does not descend into a
+directory containing `.git`, so `contacts/` cannot be committed here as content at all: `git
+add -f contacts/` stages a mode-160000 gitlink, a 180-byte line naming a commit, and no file
+contents. Verified on a scratch clone of this repo with the real private files copied in —
+473 distinctive tokens in `NL/list.md`, zero of them in the staged diff. That is a structural
+property of git rather than a pattern that has to be written correctly, which is exactly what
+#40 and #45 record failing twice in the same direction. The `**/contacts/` and `*-contacts.md`
+rules stay as a second layer.
+
+**What genuinely gets worse, recorded rather than glossed.** Contact names now sit inside this
+repo's checkout, where a `grep -r`, an editor's project-wide search, or an AI assistant working
+in the public tree can read them and paste them into a public file. Neither `.gitignore` nor
+the nested `.git` protects against that — both stop git, not the reader. The sibling-directory
+layout did protect against it, by accident of distance. This is the price of the change and it
+is a real one; `ripgrep` and `git grep` both honour `.gitignore` and so skip `contacts/`, but
+plain `grep -r` does not.
+
+**A second hazard worth knowing before it bites: `git clean -ffd`.** One `-f` refuses to remove
+an untracked nested repository — verified, `git clean -nxfd` does not list `contacts/`. Two
+does: `git clean -nxffd` lists it, and would take the private repo's `.git` with it. Keep the
+private repo pushed and this costs nothing; leave work uncommitted there and a routine cleanup
+of build output destroys it.
+
+**Why not a git submodule**, the other way to get one tree. `~/dev/DATA_PRIVACY.md` §1 rejects
+private submodules inside public repos and is right to: `.gitmodules` is tracked, so the public
+repo would publish the private repo's URL, and `git clone --recurse-submodules` would fail for
+every visitor without access, which is all of them. A nested repo that the outer one simply
+ignores has the same ergonomics and none of that.
+
+The `llm-compiler` five-layer guard remains rejected for the reason #45 gives, and now for one
+more: it exists to protect files that share a git history with public code, and these do not
+share one at all.
+
+Also removes `book/contacts/` — an empty directory left behind by the `paper_book/` → `book/`
+rename in #38 and the near miss in #40. An empty directory called `contacts` in this repo is a
+trap for exactly the mistake the rules above exist to prevent.
