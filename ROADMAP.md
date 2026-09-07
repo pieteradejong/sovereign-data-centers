@@ -3,9 +3,11 @@
 Where this project stands, what is next, and what gates what. Reasoning behind individual choices lives in
 [`DECISIONS.md`](DECISIONS.md); the record of what changed is in [`CHANGELOG.md`](CHANGELOG.md).
 
-**Status as of 2026-09-05.** The model, the data, the documents, the web app and the test suite are built
-and pushed. The blocker for anything public-facing is not code — it is that roughly 200 researched legal
-cells across 27 jurisdictions have not been verified against primary sources.
+**Status as of 2026-09-07.** The model, the data, the documents, the web app and the test suite are built
+and pushed, and the web app is deployed at
+[sovereign-data-centers.vercel.app](https://sovereign-data-centers.vercel.app) with indexing disabled. The
+blocker for anything further public-facing is not code — it is that roughly 200 researched legal cells
+across 27 jurisdictions have not been verified against primary sources.
 
 ---
 
@@ -66,6 +68,20 @@ React 19, Vite 8, TypeScript 6, Tailwind 4, D3 7. Seven working routes:
 ### Deployment configuration
 `vercel.json` (strict CSP, `nosniff`, `DENY` framing, restrictive `Permissions-Policy`) and a `robots.txt`
 that blocks indexing until the verification gate passes.
+
+### Deployment — stage 1 (2026-09-07)
+Live at **https://sovereign-data-centers.vercel.app**, `noindex`, on the Vercel project
+`pieteradejongs-projects/sovereign-data-centers`.
+
+- **Deploys are manual.** The Vercel GitHub App is not installed on the account, so the project could not
+  be linked to the repository and does not build on push. Until it is, shipping a change means running
+  `vercel deploy --prod` from a clean checkout — a stale site is the failure mode to watch for.
+- `.vercelignore` exists because the Vercel CLI reads it **instead of** `.gitignore`, not in addition to
+  it. It therefore repeats every rule that matters, `**/contacts/` first among them: without it the
+  private contacts working tree (#46) would be uploaded with the source. Any new `.gitignore` rule that
+  protects something has to be mirrored there.
+- `vercel.json` sets `github.silent`, so there is no deploy status on the commit; check the Vercel
+  dashboard.
 
 ### Documentation
 `DECISIONS.md` (41 entries), `ROADMAP.md`, `CHANGELOG.md`, `README.md` with the institutional outreach map,
@@ -134,24 +150,50 @@ countermeasure is a check that fails the build, not a more carefully written sen
 ## Planned
 
 ### Next — provenance and verification (gates everything public-facing)
-This is the most valuable remaining work, and the only thing standing between the project and a custom
-domain or a printed book.
+This is the most valuable remaining work, and the only thing standing between the project and an indexed
+site, a custom domain, or a printed book. In order:
 
-- `model/sources.csv`: one row per `(country, column)` → URL, publisher, retrieval date, confidence, quote
-- Tiered verification: primary source for any cell asserting a legal obligation; official government page
-  for the rest
-- A **sampling audit** producing a measured error rate per column — confidence as a number, not a feeling
-- Eurostat figures re-pulled from the public API and diffed against the CSV
+1. **Build `model/sources.csv`.** One row per `(country, column)`, columns: `country`, `column`, `url`,
+   `publisher`, `retrieved`, `confidence`, `quote`. The quote is the point — a URL alone does not show
+   that the cited page actually says what the cell claims.
+2. **Apply the tiered rule.** Primary source (the instrument itself) for any cell asserting a legal
+   obligation; an official government page suffices for the rest. Roughly 200 legal cells across 27
+   jurisdictions.
+3. **Add a CI check** that fails when a legal cell has no `sources.csv` row, so coverage cannot silently
+   regress once earned. `.github/workflows/ci.yml` already runs the stdlib-only model tests.
+4. **Re-pull Eurostat from the public API** and diff against the CSV, so the figures carry a retrieval
+   date rather than an assumption.
+5. **Run the sampling audit.** A random sample per column, independently re-checked, producing a
+   **measured error rate per column** — confidence as a number, not a feeling. This is the artefact that
+   opens stages 2 and 3; the earlier steps only make it possible.
 
-### Then — deployment
-`vercel.json` and `robots.txt` are in place: static build from `web/dist`, strict CSP, PR previews, and
-`noindex` until verification passes. Staged as `*.vercel.app` (noindex) → `*.vercel.app` (indexed, after
-Tier-1 verification) → **`eu27.cloud`** (after the sampling audit). The domain is deliberately
-unofficial-sounding; see `DECISIONS.md` #41.
+### Then — deployment stage 2: indexing
+**Gated on:** Tier-1 verification (steps 1–4 above).
+
+Delete the two `Disallow` lines from `web/public/robots.txt` — the file's own comment says exactly this —
+redeploy, and confirm the live `/robots.txt` no longer disallows. Nothing else changes: same URL, same
+headers.
+
+### Then — deployment stage 3: `eu27.cloud`
+**Gated on:** the sampling audit (step 5 above).
+
+Register `eu27.cloud`, add it to the Vercel project, point DNS, and let the apex redirect settle. The
+domain is deliberately unofficial-sounding so the site is not mistaken for an EU institution's; see
+`DECISIONS.md` #41. A custom domain is also what makes the SSO-protection setting irrelevant, since
+protection applies to `*.vercel.app` only.
 
 ### Then — the choropleth
-`/map` is in the navigation but unbuilt. Needs `d3-geo` with a conic projection — Cyprus and Malta are
-~3,000 km from Ireland, so an unprojected EU map wastes most of its area on ocean.
+`/map` is in the navigation but unbuilt, so the nav currently points at nothing.
+
+1. Add `d3-geo` and pick a **conic projection**. Cyprus and Malta are ~3,000 km from Ireland, so an
+   unprojected EU map wastes most of its area on ocean.
+2. Feed it the existing `web/public/data/eu27.json`; `topojson-client` and `world-atlas` are already
+   dependencies, so no new ones are needed.
+3. Use **`scaleQuantile`, not `scaleQuantize`**, for the fill — this is the already-recorded decision
+   under *Deliberately deferred*: Germany at 24,531 servers against Malta's 502 pushes even-domain
+   bucketing into a single shade.
+4. Keep the provenance caveat on the map itself, as on the infographics — a map gets screenshotted away
+   from the page that qualifies it.
 
 ### Later — the paper book
 `paper_book/`, 7 × 10 in, ~280–320 pp, grayscale-safe interior, typeset with Typst (installed).

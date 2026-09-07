@@ -4,6 +4,18 @@ Planning models and write-ups for national sovereign government data center netw
 The Netherlands (`RijksCloud`) is the worked reference case; the other 26 are generated from it by a
 parameterized model and are meant to be refined country by country.
 
+## Live site
+
+**https://sovereign-data-centers.vercel.app**
+
+Deliberately **not indexed** by search engines. The capacity figures are openly scaled placeholders, and
+the legal and regulatory entries are assertions about what 27 real jurisdictions require, researched from
+public policy documents by one person and **not yet checked against primary sources**. That is fine for a
+research repository that says so; it is not fine for something search engines present as authoritative.
+Indexing is gated on the verification work in [`ROADMAP.md`](ROADMAP.md), as is the `eu27.cloud` domain.
+
+Corrections are welcome — there is a data-correction issue template.
+
 ## Layout
 
 ```

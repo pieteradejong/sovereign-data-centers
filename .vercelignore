@@ -1,0 +1,38 @@
+# The Vercel CLI reads this file INSTEAD of .gitignore when it exists, so every
+# rule that matters has to be repeated here -- not just the additions.
+
+# Working tree of the separate PRIVATE repo sovereign-data-centers-contacts,
+# checked out at contacts/ (DECISIONS.md #46). Named individuals: never upload.
+**/contacts/
+*-contacts.md
+
+# Dependencies and build output. vercel.json runs `cd web && npm ci && npm run
+# build`, so these are produced on Vercel and must not be shipped from here.
+node_modules/
+web/node_modules/
+web/dist/
+.vercel/
+
+# Test output
+web/test-results/
+web/playwright-report/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Python caches
+__pycache__/
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# OS / editor cruft
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
