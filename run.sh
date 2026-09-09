@@ -52,8 +52,10 @@ show_help() {
     echo
     echo -e "${GREEN}Data and artefacts${NC}"
     echo "  data             Regenerate country CSVs, briefs and the JSON bundle"
+    echo "  artefacts        Re-render the tracked posters and briefing PDFs (needs Chrome)"
     echo "  export           Standalone per-country PDF briefs (book/build/briefs/)"
     echo "  book             Typeset the paper book"
+    echo "  sources          Verification-ledger coverage report"
     echo
     echo -e "${GREEN}Housekeeping${NC}"
     echo "  clean            Remove build artefacts"
@@ -107,9 +109,18 @@ case "${1:-dev}" in
     data)
         regen_data
         ;;
+    artefacts)
+        # The tracked countries/<ISO>/ poster and briefing PDF (#24, #51). Distinct from
+        # `export`, which typesets standalone A4 briefs into the gitignored book/build/.
+        check_deps
+        python3 model/export_artifacts.py "${@:2}"
+        ;;
     export)
         check_deps
         python3 book/build.py --briefs "${@:2}"
+        ;;
+    sources)
+        python3 model/sources.py "${@:2}"
         ;;
     book)
         if ! command -v typst &> /dev/null; then
@@ -134,12 +145,18 @@ case "${1:-dev}" in
         echo
         echo -e "${GREEN}Data${NC}"
         if git diff --quiet -- countries model web/public/data 2>/dev/null; then
-            print_success "Generated files match the model"
+            print_success "No uncommitted changes under countries/, model/ or the bundle"
         else
-            print_warning "Generated files are stale — run ./run.sh data"
+            # Not necessarily stale: re-rendered artefacts and work in progress look
+            # the same here. ./test.sh distinguishes them by regenerating and seeing
+            # whether anything moves.
+            print_warning "Uncommitted changes present — ./test.sh says whether they are stale"
         fi
         echo "  countries $(find countries -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ')"
         echo "  bundle    $(du -h web/public/data/eu27.json 2>/dev/null | cut -f1 || echo 'missing')"
+        echo
+        echo -e "${GREEN}Verification${NC} (the gate on indexing, the domain and the book)"
+        python3 model/sources.py 2>/dev/null | tail -1 | sed 's/^/  /' 
         ;;
     help|--help|-h)
         show_help

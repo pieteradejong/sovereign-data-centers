@@ -5,6 +5,12 @@ on:
     branches: [main]
   pull_request:
 
+# The job checks out the repo, runs stdlib Python and reads the diff. It never
+# writes to the repository, so the default read/write GITHUB_TOKEN is more scope
+# than it needs.
+permissions:
+  contents: read
+
 jobs:
   model:
     name: Model and data integrity

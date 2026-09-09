@@ -25,6 +25,7 @@ web/playwright-report/
 # Python caches
 __pycache__/
 .venv/
+venv/
 .mypy_cache/
 .ruff_cache/
 .pytest_cache/
@@ -33,6 +34,7 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+.claude/settings.local.json
 
 # Logs
 *.log

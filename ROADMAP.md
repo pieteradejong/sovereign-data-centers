@@ -3,11 +3,13 @@
 Where this project stands, what is next, and what gates what. Reasoning behind individual choices lives in
 [`DECISIONS.md`](DECISIONS.md); the record of what changed is in [`CHANGELOG.md`](CHANGELOG.md).
 
-**Status as of 2026-09-07.** The model, the data, the documents, the web app and the test suite are built
+**Status as of 2026-09-08.** The model, the data, the documents, the web app and the test suite are built
 and pushed, and the web app is deployed at
-[sovereign-data-centers.vercel.app](https://sovereign-data-centers.vercel.app) with indexing disabled. The
-blocker for anything further public-facing is not code — it is that roughly 200 researched legal cells
-across 27 jurisdictions have not been verified against primary sources.
+[sovereign-data-centers.vercel.app](https://sovereign-data-centers.vercel.app) with indexing disabled. Every
+finding from both security audits is now closed. The blocker for anything further public-facing is not code
+— it is that 189 researched legal cells across 27 jurisdictions have not been verified against primary
+sources. The ledger and the tooling for that work now exist and are empty:
+[`VERIFICATION.md`](VERIFICATION.md), `model/sources.csv`, `./run.sh sources`.
 
 ---
 
@@ -55,13 +57,14 @@ React 19, Vite 8, TypeScript 6, Tailwind 4, D3 7. Seven working routes:
 
 ### Tooling and testing
 - `init.sh`, `run.sh`, `test.sh` following the workspace template convention
-- 15 Python tests, 30 Vitest (including TS/Python parity), 15 Playwright (E2E, accessibility, responsive)
+- 29 Python tests, 30 Vitest (including TS/Python parity), 15 Playwright (E2E, accessibility, responsive)
 - CI on GitHub, including a check that committed generated files match the model
 - Chart palette validated for colour-vision deficiency on both light and dark surfaces
 
 ### Per-country artefacts
 - A one-page infographic (`<ISO>-infographic.png`) and a PDF briefing (`<ISO>-briefing.pdf`) in every
-  country directory, produced by `model/export_artifacts.py` via `run.sh export`
+  country directory, produced by `model/export_artifacts.py` via `run.sh artefacts` (not `run.sh export`,
+  which typesets something else entirely — corrected 2026-09-08)
 - Data-driven, not AI-generated; no state emblems or official-looking wordmarks; the provenance caveat is
   printed on the poster itself, because images get shared without the page that explains them
 
@@ -83,9 +86,18 @@ Live at **https://sovereign-data-centers.vercel.app**, `noindex`, on the Vercel 
 - `vercel.json` sets `github.silent`, so there is no deploy status on the commit; check the Vercel
   dashboard.
 
+### Artefact integrity (2026-09-08)
+- The tracked per-country posters and PDFs are a deliberate deliverable, not an accident (#51); #41 is
+  scoped to the typst build directories it always meant
+- PDFs are byte-reproducible: Chrome's wall-clock `/CreationDate` and `/ModDate` are rewritten to
+  `.build-epoch` (#53), verified by exporting all 27 twice and comparing hashes
+- `countries/ARTEFACTS.csv` records each artefact's hash and the hash of the bundle it was rendered from;
+  `tests/test_artifacts.py` fails when the data has moved past the binaries (#52)
+- `tests/test_docs.py` asserts decision numbers are unique and every `#N` reference resolves (#55)
+
 ### Documentation
-`DECISIONS.md` (41 entries), `ROADMAP.md`, `CHANGELOG.md`, `README.md` with the institutional outreach map,
-and a data-correction issue template.
+`DECISIONS.md` (55 entries), `ROADMAP.md`, `CHANGELOG.md`, `VERIFICATION.md`, `README.md` with the
+institutional outreach map, and a data-correction issue template.
 
 ---
 
@@ -126,13 +138,13 @@ cross-checked against the public repo's full history: zero emails, zero phone nu
 names appear anywhere in it. The only overlaps are `European Parliament` and `Tweede Kamer`, which are
 institutions and belong in the public outreach map.
 
-Four findings, none of them a disclosure:
+Four findings, none of them a disclosure. **All four were closed on 2026-09-08:**
 
 | # | Finding | Remediation | Severity |
 |---|---|---|---|
-| 1 | 56 generated binaries (27 briefing PDFs, 27 infographic PNGs, 12.7 MB of a 17 MB `.git`) are committed, directly contradicting `README.md` ("Nothing they produce is committed") and #41 ("No generated PDF is ever committed"). `model/export_artifacts.py` writes them into `countries/<ISO>/`, a path #41's safeguard never covered | Decide whether the briefs ship in-repo deliberately — then correct `README.md` and #41 to say so — or are committed by accident, and gitignore them. Only one commit has touched them, so history is still cheap to keep clean | Medium |
-| 1a | Those PDFs embed a real wall-clock `CreationDate` rather than the pinned `.build-epoch`, so they are not byte-reproducible and every rebuild produces a spurious diff. Their `Creator` is `HeadlessChrome`/`Skia`, not the typst path `README.md` implies | Honour `SOURCE_DATE_EPOCH` in the Chromium export, or accept the churn as the cost of committing them | Medium |
-| 2 | `.github/workflows/ci.yml` declares no `permissions:` block and inherits the default `GITHUB_TOKEN` scope, though the job runs stdlib Python and needs read only | Add `permissions: contents: read` | Low-medium |
+| 1 | 56 generated binaries (27 briefing PDFs, 27 infographic PNGs, 12.7 MB of a 17 MB `.git`) are committed, directly contradicting `README.md` ("Nothing they produce is committed") and #41 ("No generated PDF is ever committed"). `model/export_artifacts.py` writes them into `countries/<ISO>/`, a path #41's safeguard never covered | **Closed 2026-09-08.** They ship deliberately: #51 records why, #24 already said so, and #41 was scoped to the typst build directories it actually governed. `README.md` and `ASSETS.md` corrected; `./run.sh artefacts` added, since `./run.sh export` was never the command that produced them | Medium |
+| 1a | Those PDFs embed a real wall-clock `CreationDate` rather than the pinned `.build-epoch`, so they are not byte-reproducible and every rebuild produces a spurious diff. Their `Creator` is `HeadlessChrome`/`Skia`, not the typst path `README.md` implies | **Closed 2026-09-08.** Both date fields are rewritten to `.build-epoch` after printing, length-preserving so the xref table survives (#53). Also found: the PDFs were themselves stale. `f03fde7` changed the bundle and re-rendered the 27 posters but not the 27 PDFs, which kept a provenance banner reading "Generated 2026-09-03" for three days. Re-rendered from the current bundle, and `countries/ARTEFACTS.csv` now makes the next occurrence a test failure (#52) | Medium |
+| 2 | `.github/workflows/ci.yml` declares no `permissions:` block and inherits the default `GITHUB_TOKEN` scope, though the job runs stdlib Python and needs read only | **Closed 2026-09-08.** Added, with a comment saying why the job needs nothing more | Low-medium |
 | 3 | `ROADMAP.md` still described the four 2026-09-04 findings as open after `f03fde7` closed them, and still pointed named individuals at `paper_book/contacts/` after #45 moved them to a private repo | Fixed in this pass | Low |
 
 **Informational.** `pieter.a.dejong@gmail.com` appears as committer on all 21 commits and is permanently
@@ -140,10 +152,26 @@ public. This matches `chokepoints-globe` and is presumably deliberate; it is not
 `~/dev/CLAUDE.md` calls it out, and because it cannot be scrubbed without rewriting history.
 
 **The pattern worth naming.** Findings 1 and 3 are the same failure as the two near misses already
-recorded in #40 and #45: a document asserts a rule, the tree quietly stops matching it, and nothing
+recorded in #49 and #45: a document asserts a rule, the tree quietly stops matching it, and nothing
 complains. Three of the four findings above are drift between what the docs claim and what the repository
 does — none of them dangerous on its own, all of them the shape that hides something that is. The
 countermeasure is a check that fails the build, not a more carefully written sentence.
+
+**Acted on, 2026-09-08.** Closing them turned up two more instances of exactly this pattern, which is the
+argument for the checks rather than against them:
+
+- `DECISIONS.md` #24 ("per-country PDFs and posters are tracked") and #41 ("no generated PDF is ever
+  committed") were both written on 2026-09-04 and contradict each other. The binaries were not committed by
+  accident; they were committed under one rule while another rule said they were not. Resolved in #51.
+- The register had **two entries numbered 38, 39, 40 and 41**. `README.md` cited #41 meaning the PDF rule
+  and this file cited #41 meaning the domain choice, and both were correct. Renumbered to #47-#50 (#55).
+- `ASSETS.md` and this file both credited `./run.sh export` with producing the per-country artefacts. That
+  command typesets something else entirely; the artefacts had no `run.sh` entry point at all until one was
+  added.
+
+Fourteen new Python tests cover them: artefact presence and hash drift, artefact staleness against the
+data bundle, wall-clock dates in a PDF, ledger validity and the coverage ratchet, and duplicate or
+dangling decision numbers.
 
 ---
 
@@ -151,16 +179,21 @@ countermeasure is a check that fails the build, not a more carefully written sen
 
 ### Next — provenance and verification (gates everything public-facing)
 This is the most valuable remaining work, and the only thing standing between the project and an indexed
-site, a custom domain, or a printed book. In order:
+site, a custom domain, or a printed book. The working document is [`VERIFICATION.md`](VERIFICATION.md);
+this is the state of the five steps.
 
-1. **Build `model/sources.csv`.** One row per `(country, column)`, columns: `country`, `column`, `url`,
-   `publisher`, `retrieved`, `confidence`, `quote`. The quote is the point — a URL alone does not show
-   that the cited page actually says what the cell claims.
-2. **Apply the tiered rule.** Primary source (the instrument itself) for any cell asserting a legal
-   obligation; an official government page suffices for the rest. Roughly 200 legal cells across 27
-   jurisdictions.
-3. **Add a CI check** that fails when a legal cell has no `sources.csv` row, so coverage cannot silently
-   regress once earned. `.github/workflows/ci.yml` already runs the stdlib-only model tests.
+1. **Build `model/sources.csv`.** ✅ *Scaffolded 2026-09-08, and empty.* Schema as planned —
+   `country,column,url,publisher,retrieved,confidence,quote` — with `model/sources.py` validating it and
+   `tests/test_sources.py` guarding it. A row whose quote is under 20 characters fails, because a URL alone
+   does not show the cited page says what the cell claims.
+2. **Apply the tiered rule.** ✅ *Encoded, not yet applied.* Three tier-1 columns require `confidence:
+   primary`; four tier-2 columns take an official government page; the three ordinal columns are author
+   judgements and a source row for one is a validation error. **189 cells. 0 done.** This is the work.
+3. **Add a CI check** that fails when a legal cell has no `sources.csv` row. ✅ *Exists as
+   `python3 model/sources.py --strict`, deliberately not yet wired into CI* — it would fail on day one and
+   be disabled on day two. What CI enforces today is the ratchet: `COVERAGE_FLOOR` in
+   `tests/test_sources.py` may only be raised, so verified cells cannot silently become unverified. Switch
+   to `--strict` when coverage reaches 189.
 4. **Re-pull Eurostat from the public API** and diff against the CSV, so the figures carry a retrieval
    date rather than an assumption.
 5. **Run the sampling audit.** A random sample per column, independently re-checked, producing a
@@ -179,7 +212,7 @@ headers.
 
 Register `eu27.cloud`, add it to the Vercel project, point DNS, and let the apex redirect settle. The
 domain is deliberately unofficial-sounding so the site is not mistaken for an EU institution's; see
-`DECISIONS.md` #41. A custom domain is also what makes the SSO-protection setting irrelevant, since
+`DECISIONS.md` #50. A custom domain is also what makes the SSO-protection setting irrelevant, since
 protection applies to `*.vercel.app` only.
 
 ### Then — the choropleth
@@ -213,6 +246,24 @@ official capacity only. Outreach itself waits on verification: the first thing a
 check is the entry about their own country.
 
 ---
+
+## Open questions
+
+### Two per-country PDFs, from two renderers
+Raised 2026-09-08 while resolving the #24/#41 contradiction, and left open deliberately.
+
+- `countries/<ISO>/<ISO>-briefing.pdf` — headless Chrome printing `/country/:iso`. Tracked (#51).
+- `/briefs/<ISO>.pdf` on the site — typst, from `book/build.py --briefs`. Not tracked (#41).
+
+Both render from the same dict, so they cannot disagree about a figure, and #6 is satisfied. But
+#39 chose typst precisely because printing web CSS gives no facing-page margins, no widow control
+and viewport-driven page breaks — "acceptable for a screenshot, weak for a document handed to a
+ministry" — and then the Chrome path came back the next day for the tracked artefacts without that
+being weighed.
+
+If only one should exist, it is the typst brief, and the tracked artefact becomes poster-only. That
+is a product decision about what a country directory is *for*, not housekeeping, so it is not being
+made as a side effect of an audit fix.
 
 ## Deliberately deferred
 

@@ -12,7 +12,8 @@ Deliberately **not indexed** by search engines. The capacity figures are openly 
 the legal and regulatory entries are assertions about what 27 real jurisdictions require, researched from
 public policy documents by one person and **not yet checked against primary sources**. That is fine for a
 research repository that says so; it is not fine for something search engines present as authoritative.
-Indexing is gated on the verification work in [`ROADMAP.md`](ROADMAP.md), as is the `eu27.cloud` domain.
+Indexing is gated on the verification work in [`VERIFICATION.md`](VERIFICATION.md), as is the
+`eu27.cloud` domain.
 
 Corrections are welcome — there is a data-correction issue template.
 
@@ -25,27 +26,33 @@ model/
   eu27_parameters.csv        one row per country: population, GDP, public-admin employment, power price,
                              renewables, land, flags, existing gov cloud, digital ID, IXPs, and the
                              legal/regulatory posture columns (certification, classification, procurement)
+  sources.csv                the verification ledger: one row per sourced claim, with the quote
+  sources.py                 validates the ledger and reports coverage (./run.sh sources)
   scaling_rules.csv          how each workload class scales from the NL baseline (weights, floors, frontline multiplier)
   migration_phases.csv       workload class -> migration phase
   capacity_model.py          workloads -> servers -> racks -> MW -> sites -> CAPEX/OPEX, for any country dir
   country_data.py            assembles every fact about a country into one dict (the single source)
   generate_countries.py      builds countries/<ISO>/ inputs + GOAL.md for all 27, runs the model, writes SUMMARY.md
   export_json.py             writes web/public/data/eu27.json from the same dict
+  export_artifacts.py        renders the tracked per-country poster and briefing PDF (./run.sh artefacts)
   eu27_results.csv           one result row per country (generated)
 book/                        print edition and per-country PDF briefs (typst); see book/README.md
 OUTREACH.md                  institutional distribution map, one entry per member state
 countries/
   SUMMARY.md                 cross-country table (generated)
+  ARTEFACTS.csv              sha256 of every tracked poster and PDF, and of the bundle it came from
   NL/                        the reference case: hand-written GOAL.md, xlsx model, inputs, TODO, plan,
                              FRONTIER-MODEL.md (authored companion note, not generated), and the
                              AI-generated concept infographic (see ASSETS.md)
   DE/ FR/ ... (x26)          params.csv, workloads_inputs.csv, region_allocation_inputs.csv (generated inputs, edit freely)
                              GOAL.md (generated 12-section brief), facility_summary.csv,
-                             region_allocation_output.csv, migration_phases.csv (outputs)
+                             region_allocation_output.csv, migration_phases.csv (outputs),
+                             <ISO>-infographic.png and <ISO>-briefing.pdf (tracked deliverables)
 web/                         React + Vite visualization app; reads the JSON bundle, no server
 tests/                       stdlib unittest suite for the model and the data
 DECISIONS.md                 why every choice was made
 CHANGELOG.md                 what changed and when
+VERIFICATION.md              the source-verification workstream: schema, tiered rule, where it stands
 ```
 
 Python is the source of truth. The markdown briefs, the JSON bundle, the app and the exports are all
@@ -59,12 +66,20 @@ renderings of one `country_data.build()` dict, so they cannot disagree with each
 ./run.sh data                               # regenerate country files, briefs and the JSON bundle
 ./run.sh help                               # every command
 ./test.sh                                   # the full gate: model, types, lint, unit, build, e2e, a11y
+./run.sh artefacts                          # re-render the tracked posters and briefing PDFs
+./run.sh sources                            # verification-ledger coverage
 ./run.sh export                             # 27 standalone A4 country briefs (PDF)
 ./run.sh book                               # typeset the A5 print edition
 ```
 
-`export` and `book` need typst (`brew install typst`). Nothing they produce is committed —
-see `DECISIONS.md` #41.
+`export` and `book` need typst (`brew install typst`), and write into `book/build/`, which is
+gitignored — that build output is never committed (`DECISIONS.md` #41).
+
+`artefacts` is the other, separate pipeline: headless Chrome renders `<ISO>-infographic.png` and
+`<ISO>-briefing.pdf` into each country directory, and **those two are tracked deliverables**
+(#24, #51). They are byte-reproducible (#53), and `countries/ARTEFACTS.csv` records the data
+bundle each was rendered from so the test suite can tell when they have gone stale (#52). Needs
+Chrome and `npm`.
 
 The model on its own, without the app:
 

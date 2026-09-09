@@ -3,6 +3,9 @@
 .vscode/
 .idea/
 
+# Local assistant config. Can carry absolute paths from this machine.
+.claude/settings.local.json
+
 # Env / secrets
 .env
 .env.*
@@ -14,6 +17,7 @@
 # Python (in case tooling is added later)
 __pycache__/
 .venv/
+venv/
 .mypy_cache/
 .ruff_cache/
 .pytest_cache/
@@ -39,7 +43,7 @@ web/dist/
 # into a directory containing .git, so even `git add -f contacts/` stages a
 # mode-160000 gitlink -- 180 bytes naming a commit -- and never a single line of
 # file content. A filename mistake can no longer leak a name, which is the
-# failure mode #40 and #45 record happening twice.
+# failure mode #49 and #45 record happening twice.
 #
 # These rules are the second layer. They keep contacts/ out of `git status`, and
 # *-contacts.md still catches a stray file written outside that directory. They

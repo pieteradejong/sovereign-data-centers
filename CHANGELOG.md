@@ -5,6 +5,100 @@ What changed and when. Reasoning for the choices behind these changes lives in
 
 ---
 
+## 2026-09-08
+
+Closes the four findings the 2026-09-06 audit left open, and scaffolds the verification
+workstream that gates everything public-facing. Reasoning in [`DECISIONS.md`](DECISIONS.md)
+#51-#55; the workstream itself has its own document, [`VERIFICATION.md`](VERIFICATION.md).
+
+### Decided — the per-country artefacts ship in the repository
+
+Audit finding 1 asked for a decision, not a cleanup: 54 tracked binaries against a `README.md`
+sentence saying nothing generated is committed. The cause turned out to be a contradiction, not
+an accident. **#24 and #41 were written on the same day and say opposite things** — "per-country
+PDFs, posters and the JSON bundle are tracked" against "no generated PDF is ever committed" —
+and the tree followed the first while the README quoted the second.
+
+They stay tracked (#51). #41 is scoped to the typst build directories it actually governed, and
+the two pipelines are now named wherever they are described, because they were being conflated:
+
+| Pipeline | Output | Tracked |
+|---|---|---|
+| `book/build.py --briefs` (typst), `./run.sh export` | `book/build/briefs/` | no |
+| `model/export_artifacts.py` (Chrome), `./run.sh artefacts` | `countries/<ISO>/` poster and PDF | yes |
+
+`./run.sh artefacts` is new. `ASSETS.md` and `ROADMAP.md` both credited `./run.sh export` with
+producing the tracked artefacts; that command typesets something else, and the artefacts had no
+`run.sh` entry point at all.
+
+One thing is recorded rather than settled: #39 abandoned the Chrome PDF path on 2026-09-04 as
+"weak for a document handed to a ministry", and #47 reinstated it on 2026-09-05 without that
+being weighed. Both PDFs render from the same dict so no figure can diverge, but whether a
+country directory should hold the web brief as printed or the typeset one is a product question.
+`ROADMAP.md` now carries it under **Open questions**.
+
+### Fixed — the PDFs are byte-reproducible, and were stale
+
+Chrome stamps wall-clock `/CreationDate` and `/ModDate` into every PDF, so the 27 tracked
+briefings were the only part of the repository that was not byte-reproducible (#15, #34). Both
+fields are now rewritten to `.build-epoch` after printing, length-preserving so the
+cross-reference table survives (#53).
+
+Verified by exporting all 27 countries twice and comparing: **54 of 54 artefacts byte-identical
+across two full runs.**
+
+Re-rendering also showed the PDFs had drifted. `f03fde7` changed the bundle and re-rendered the
+27 posters **but not the 27 PDFs**, which kept a provenance banner reading "Generated
+2026-09-03" for three days — wrong on the artefact designed to travel without the page that
+explains it, and invisible because half the artefacts had been refreshed.
+
+### Added — `countries/ARTEFACTS.csv`, so the next drift fails a test
+
+Each artefact's sha256 alongside the sha256 of the JSON bundle it was rendered from (#52). CI has
+no Chrome and cannot re-render to check, but comparing two hashes needs no browser.
+`tests/test_artifacts.py` fails when the data has moved past the binaries, when a file no longer
+matches its recorded hash, or when a PDF carries a wall-clock date. A partial export carries the
+untouched rows' recorded hashes over rather than certifying files it did not render.
+
+### Added — the verification ledger
+
+`model/sources.csv`, `model/sources.py`, `tests/test_sources.py` and `VERIFICATION.md` implement
+ROADMAP steps 1-3 (#54). The ledger is **empty: 0 of 189 cells sourced**, which is the honest
+starting point and now a visible number rather than a paragraph — `./run.sh sources` and
+`./run.sh health` both report it.
+
+- Schema `country,column,url,publisher,retrieved,confidence,quote`. A quote under 20 characters
+  fails validation: a URL shows a page exists, not that it says what the cell claims.
+- Three tier-1 columns require `confidence: primary`. Four tier-2 columns take an official
+  government page. The three ordinal columns are author judgements (#10) and a source row for
+  one is an error.
+- `sources.py --strict` is the end-state gate and is deliberately not in CI yet. What CI enforces
+  is `COVERAGE_FLOOR`, a ratchet that may only be raised.
+
+### Fixed — DECISIONS.md had two entries numbered 38, 39, 40 and 41
+
+For three days. `README.md` cited #41 meaning the PDF rule and `ROADMAP.md` cited #41 meaning the
+domain choice, and both were right, which is the worst way for a reference to be wrong. The
+second block is renumbered #47-#50 and every reference to it updated across `ASSETS.md`,
+`CHANGELOG.md`, `ROADMAP.md`, `.gitignore` and `DECISIONS.md` itself.
+
+`tests/test_docs.py` now asserts numbers are unique and contiguous and that every `#N` reference
+resolves to an entry (#55).
+
+### Changed — CI runs with `contents: read`
+
+Audit finding 2. The job checks out, runs stdlib Python and reads a diff; it inherited the
+default read/write `GITHUB_TOKEN` scope for no reason.
+
+### The pattern, again
+
+Three of the four audit findings were drift between what a document asserted and what the tree
+did. Closing them turned up three more of the same shape: the #24/#41 contradiction, the
+duplicate decision numbers, and the wrong command in two documents. None dangerous alone; all of
+them the shape that hides something that is. Fourteen new tests fail on the next one.
+
+---
+
 ## 2026-09-07
 
 ### Changed — the contacts repo now lives at `contacts/`
@@ -13,7 +107,7 @@ What changed and when. Reasoning for the choices behind these changes lives in
 inside this working tree. It is still a separate private repo with its own `.git` and its own remote —
 nothing was merged and no file crossed between repos. Reasoning in [`DECISIONS.md`](DECISIONS.md) #46.
 
-Verified rather than assumed, because #40 and #45 both record this exact class of assumption going wrong:
+Verified rather than assumed, because #49 and #45 both record this exact class of assumption going wrong:
 
 | Check | Result |
 |---|---|
@@ -31,7 +125,7 @@ nested `.git`, and the comment block above them now says so.
 
 ### Removed — the empty `book/contacts/`
 
-Left behind by the `paper_book/` → `book/` rename (#38) and the near miss in #40. An empty directory
+Left behind by the `paper_book/` → `book/` rename (#38) and the near miss in #49. An empty directory
 called `contacts` in this repo is a trap for precisely the mistake the ignore rules exist to prevent.
 
 ---

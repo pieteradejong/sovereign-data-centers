@@ -62,11 +62,12 @@ generated from the model instead.
 | | |
 |---|---|
 | Origin | Rendered by headless Chrome from the app's `/poster/:iso` route |
-| Produced by | `model/export_artifacts.py` (`./run.sh export`) |
+| Produced by | `model/export_artifacts.py` (`./run.sh artefacts`) |
 | Source of every figure | `country_data.build()` via `web/public/data/eu27.json` |
-| Reproducible | Yes — delete and regenerate; the numbers come from the model, not from a prompt |
+| Reproducible | Byte-for-byte — Chrome writes no timestamp into a screenshot PNG (#53) |
+| Tracked | Yes, as deliverables (#24, #51); hashed in `countries/ARTEFACTS.csv` (#52) |
 
-Deliberately different from the Dutch artwork above, per `DECISIONS.md` #38:
+Deliberately different from the Dutch artwork above, per `DECISIONS.md` #47:
 
 - **Every figure traces to the model.** A poster cannot disagree with its country's brief.
 - **No state emblems, flags, crowns or official-looking wordmarks.** These are concept studies for a
@@ -75,7 +76,14 @@ Deliberately different from the Dutch artwork above, per `DECISIONS.md` #38:
 
 ## `countries/<ISO>/<ISO>-briefing.pdf` — 27 files
 
-Same pipeline, printed from the app's `/country/:iso` route. Same provenance and same reproducibility.
+Same pipeline, printed from the app's `/country/:iso` route. Same provenance and same reproducibility —
+with one extra step. Chrome stamps the wall-clock time into `/CreationDate` and `/ModDate`, so the
+exporter rewrites both to the pinned `.build-epoch` afterwards (#34, #53); without that, re-running it
+produced 27 spurious diffs against tracked files. `/Creator` and `/Producer` still name the local Chrome
+and Skia build, so byte-identity holds within a Chrome major version, not across them.
+
+**Not typst.** These come from the Chrome pipeline above. `./run.sh export` is a different thing: it
+typesets standalone A4 briefs into the gitignored `book/build/briefs/` (#41).
 
 ---
 

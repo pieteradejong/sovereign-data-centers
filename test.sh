@@ -58,13 +58,21 @@ ok "model, CSV integrity, referential integrity, determinism"
 
 # -----------------------------------------------------------------------------
 step "Generated files are current"
-# Regenerate with the date pinned; anything that moves is a real change that was
-# not committed, which would make the published site disagree with the model.
+# Regenerate with the date pinned; anything the generator *moves* is a real change
+# that was not committed, which would make the published site disagree with the model.
+#
+# What is compared is the diff before against the diff after, not "is the tree clean".
+# countries/ holds tracked binaries that are re-rendered by hand (#51), and work in
+# progress under model/ is normal, so a dirty tree is not by itself a stale one --
+# and a check that cries wolf on every uncommitted edit is a check people stop reading.
+GENERATED_PATHS=(countries model web/public/data)
+before="$(git diff -- "${GENERATED_PATHS[@]}" | shasum)"
 python3 model/generate_countries.py > /dev/null
 python3 model/export_json.py > /dev/null
-if ! git diff --quiet -- countries model web/public/data; then
-    echo -e "${RED}    ❌ Generated files are stale. Run ./run.sh data and commit.${NC}"
-    git diff --stat -- countries model web/public/data
+after="$(git diff -- "${GENERATED_PATHS[@]}" | shasum)"
+if [ "$before" != "$after" ]; then
+    echo -e "${RED}    ❌ Generated files are stale: regenerating changed them. Run ./run.sh data and commit.${NC}"
+    git diff --stat -- "${GENERATED_PATHS[@]}"
     exit 1
 fi
 ok "briefs, CSVs and bundle match the model"

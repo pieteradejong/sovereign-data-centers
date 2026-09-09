@@ -20,6 +20,11 @@ conflating them is the easiest way to misuse this project.
 Every row of `eu27_parameters.csv` carries a `data_status` column repeating this, because GitHub renders a
 CSV as a clean table that looks more authoritative than it is.
 
+**Moving rows out of the third kind is the project's gating workstream.** `sources.csv` is the ledger where
+that verification is recorded — one row per sourced claim, with the quote that supports it — and
+`../VERIFICATION.md` has the schema, the tiered rule and where it currently stands. `python3
+model/sources.py` reports coverage and fails on a row that is not usable evidence.
+
 ## Why the ratings are not summed
 
 The eight sovereignty-matrix dimensions are shown side by side and never combined into a score.
@@ -32,6 +37,11 @@ Generated files stamp their date from `SOURCE_DATE_EPOCH`, pinned in `.build-epo
 different day does not rewrite 27 files with a new date and bury the real changes. `./test.sh` asserts that
 running the generator twice is a byte-for-byte no-op.
 
+The same applies to the binaries: `export_artifacts.py` rewrites the wall-clock `/CreationDate` and
+`/ModDate` Chrome stamps into each PDF (`DECISIONS.md` #53), and records every artefact's hash — with the
+hash of the bundle it was rendered from — in `countries/ARTEFACTS.csv`, so the test suite can detect a
+tracked binary that the data has moved past (#52).
+
 ## Files
 
 ```
@@ -39,7 +49,9 @@ capacity_model.py      workloads -> servers -> racks -> MW -> sites -> CAPEX/OPE
 country_data.py        assembles one country's facts into a dict; scores the matrix ordinals
 generate_countries.py  scales NL to the other 26, writes briefs and SUMMARY.md
 export_json.py         writes web/public/data/eu27.json from the same dict
-export_artifacts.py    renders per-country PNG infographics and PDF briefings
+export_artifacts.py    renders the tracked per-country PNG infographics and PDF briefings
+sources.py             validates the verification ledger and reports coverage
+sources.csv            the verification ledger: one row per sourced claim, with its quote
 assumptions.csv        shared engineering and economic defaults
 eu27_parameters.csv    one row per member state; see the table above before using it
 scaling_rules.csv      how each workload class scales from the Dutch baseline
